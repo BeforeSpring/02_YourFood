@@ -28,8 +28,7 @@ public class Review {
     @Column(columnDefinition = "varchar(1000)")
     private String content;
 
-    @Column(columnDefinition = "min(1), max(5)")
-    private Long rating;
+    private Long rating; //제약조건 추가 1 ~ 5
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
