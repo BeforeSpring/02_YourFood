@@ -2,12 +2,14 @@ package beforespring.yourfood.restaurant.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Menu {
     @Id
     @Column(name = "menu_id")

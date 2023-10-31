@@ -2,6 +2,7 @@ package beforespring.yourfood.restaurant.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.math.BigDecimal;
     }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Restaurant {
     @Id
     @Column(name = "restaurant_id")
