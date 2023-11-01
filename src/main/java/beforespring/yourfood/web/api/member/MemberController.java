@@ -1,12 +1,12 @@
 package beforespring.yourfood.web.api.member;
 
-import beforespring.yourfood.web.request.member.LoginRequest;
-import beforespring.yourfood.web.request.member.SignupRequest;
-import beforespring.yourfood.web.request.member.UpdateUserSettingsRequest;
-import beforespring.yourfood.web.response.GenericResponse;
-import beforespring.yourfood.web.response.member.LoginResponse;
-import beforespring.yourfood.web.response.member.SignupResponse;
-import beforespring.yourfood.web.response.member.UpdateUserSettingResponse;
+import beforespring.yourfood.web.api.member.request.LoginRequest;
+import beforespring.yourfood.web.api.member.request.SignupRequest;
+import beforespring.yourfood.web.api.member.request.UpdateUserSettingsRequest;
+import beforespring.yourfood.web.api.common.GenericResponse;
+import beforespring.yourfood.web.api.member.response.LoginResponse;
+import beforespring.yourfood.web.api.member.response.SignupResponse;
+import beforespring.yourfood.web.api.member.response.UpdateUserSettingResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +20,7 @@ public class MemberController {
     @PostMapping
     public GenericResponse<SignupResponse> registerMember(@RequestBody SignupRequest signupRequest) {
         return null;
+
     }
 
     /**
@@ -31,6 +32,7 @@ public class MemberController {
     public GenericResponse<LoginResponse> loginMember(@RequestBody LoginRequest loginRequest) {
         return null;
     }
+
 
     /**
      * 회원 설정 업데이트

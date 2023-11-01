@@ -1,9 +1,12 @@
 package beforespring.yourfood.web.api.restaurant;
 
-import beforespring.yourfood.web.response.GenericResponse;
-import beforespring.yourfood.web.response.restaurant.RegionListResponse;
-import beforespring.yourfood.web.response.restaurant.RestaurantDetailResponse;
-import beforespring.yourfood.web.response.restaurant.RestaurantListResponse;
+<<<<<<< HEAD
+import beforespring.yourfood.web.api.common.GenericResponse;
+=======
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
+import beforespring.yourfood.web.api.restaurant.response.RegionListResponse;
+import beforespring.yourfood.web.api.restaurant.response.RestaurantDetailResponse;
+import beforespring.yourfood.web.api.restaurant.response.RestaurantListResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,8 +17,13 @@ public class RestaurantController {
      * @return
      */
     @GetMapping("/regions")
+<<<<<<< HEAD
     public GenericResponse<RegionListResponse> getRegions() {
         return null;
+=======
+    public RegionListResponse getRegions() {
+        return new RegionListResponse();
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
     }
 
     /**
@@ -25,8 +33,13 @@ public class RestaurantController {
      */
 
     @GetMapping("/{restaurant_id}")
+<<<<<<< HEAD
     public GenericResponse<RestaurantDetailResponse> getRestaurantDetail(@PathVariable Long restaurant_id) {
         return null;
+=======
+    public RestaurantDetailResponse getRestaurantDetail(@PathVariable Long restaurant_id) {
+        return new RestaurantDetailResponse();
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
     }
 
     /**
@@ -37,10 +50,17 @@ public class RestaurantController {
      * @return
      */
     @GetMapping
+<<<<<<< HEAD
     public GenericResponse<RestaurantListResponse> getRestaurantsByRegion(@RequestParam String region,
                                                          @RequestParam int range,
                                                          @RequestParam(required = false) String orderBy) {
         return null;
+=======
+    public RestaurantListResponse getRestaurantsByRegion(@RequestParam String region,
+                                                         @RequestParam int range,
+                                                         @RequestParam(required = false) String orderBy) {
+        return new RestaurantListResponse();
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
     }
 
     /**
@@ -52,12 +72,20 @@ public class RestaurantController {
      * @return
      */
     @GetMapping("/nearby")
+<<<<<<< HEAD
     public GenericResponse<RestaurantListResponse> getNearbyRestaurants(@RequestParam int range,
+=======
+    public RestaurantListResponse getNearbyRestaurants(@RequestParam int range,
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
                                                        @RequestParam String lat,
                                                        @RequestParam String lon,
                                                        @RequestParam(required = false) String orderBy) {
 
+<<<<<<< HEAD
         return null;
+=======
+        return new RestaurantListResponse();
+>>>>>>> de6ed1085a77161aa78396c58656975e7e244a4b
     }
 
 }
