@@ -1,4 +1,4 @@
-package beforespring.yourfood.restaurant.domain;
+package beforespring.yourfood.app.restaurant.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class Menu {
     @Column(nullable = false)
     private String description;
 
-    private String price; // nullable로 하고 null일 경우 싯가??
+    private String price;
 
     @Builder
     public Menu(

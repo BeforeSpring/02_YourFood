@@ -1,4 +1,4 @@
-package beforespring.yourfood.restaurant.domain;
+package beforespring.yourfood.app.restaurant.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

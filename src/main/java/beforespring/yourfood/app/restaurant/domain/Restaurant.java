@@ -1,12 +1,13 @@
-package beforespring.yourfood.restaurant.domain;
+package beforespring.yourfood.app.restaurant.domain;
 
-import beforespring.yourfood.utils.Coordinate;
+import beforespring.yourfood.app.utils.Coordinate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(
@@ -54,13 +55,13 @@ public class Restaurant {
     @Column(name = "cuisine_type", nullable = false)
     private CuisineType cuisineType;
 
-    @Column(nullable = false)
-    private Double rating;
+    @Column(nullable = false, precision = 3, scale = 8, columnDefinition = "DECIMAL(3,8)")
+    private BigDecimal rating;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(nullable = false)
     private boolean operating;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(nullable = false)
     private boolean deleted;
 
     @Builder
@@ -76,30 +77,17 @@ public class Restaurant {
         this.address = address;
         this.coordinate = coordinate;
         this.cuisineType = cuisineType;
-        this.rating = 0.0;
+        this.rating = BigDecimal.valueOf(0.0);
         this.operating = operating;
         this.deleted = false;
     }
 
-    /**
-     * 레스토랑 정보 업데이트
-     *
-     * @param description 수정할 식당 설명
-     * @param address     수정할 식당 주소
-     * @param coordinate  수정할 좌표
-     * @param operating   운영 여부
-     */
-    public void updateRestaurant(
-        String description,
-        String address,
-        AddressCode addressCode,
-        Coordinate coordinate,
-        Boolean operating) {
-        this.description = description;
-        this.address = address;
-        this.addressCode = addressCode;
-        this.coordinate = coordinate;
+    public void updateOperating(Boolean operating) {
         this.operating = operating;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -107,5 +95,9 @@ public class Restaurant {
      */
     public void deleteRestaurantDb() {
         this.deleted = true;
+    }
+
+    public void updateRating(BigDecimal rating) {
+        this.rating = rating;
     }
 }

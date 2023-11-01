@@ -1,4 +1,4 @@
-package beforespring.yourfood.utils;
+package beforespring.yourfood.app.utils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

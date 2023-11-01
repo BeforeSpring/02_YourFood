@@ -1,6 +1,6 @@
-package beforespring.yourfood.member.domain;
+package beforespring.yourfood.app.member.domain;
 
-import beforespring.yourfood.utils.Coordinate;
+import beforespring.yourfood.app.utils.Coordinate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Member {
     @Embedded
     private Coordinate coordinate;
 
-    @Column(name = "lunch_noti_status", columnDefinition = "TINYINT(1)")
+    @Column(name = "lunch_noti_status")
     private boolean lunchNotiStatus;
 
     @Column(name = "noti_agreed_at")
