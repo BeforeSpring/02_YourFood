@@ -1,12 +1,12 @@
 package beforespring.yourfood.restaurant.domain;
 
+import beforespring.yourfood.utils.Coordinate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(
@@ -14,8 +14,16 @@ import java.math.BigDecimal;
     indexes = {
         @Index(
             name = "idx__restaurant__name__address",
-            columnList = "name_address",
+            columnList = "name, address",
             unique = true
+        ),
+        @Index(
+            name = "idx__restaurant__name",
+            columnList = "name"
+        ),
+        @Index(
+            name = "idx__restaurant__sido__sigungu",
+            columnList = "sido, sigungu"
         )
     }
 )
@@ -27,25 +35,26 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_address")
-    private String nameAddress;
-
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private String address;
 
-    @Column(precision = 3, scale = 6)
-    private BigDecimal lat;
+    @Embedded
+    private AddressCode addressCode;
 
-    @Column(precision = 3, scale = 6)
-    private BigDecimal lon;
+    @Embedded
+    private Coordinate coordinate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "cuisine_type")
+    @Column(name = "cuisine_type", nullable = false)
     private CuisineType cuisineType;
 
+    @Column(nullable = false)
     private Double rating;
 
     @Builder
@@ -53,15 +62,12 @@ public class Restaurant {
         String name,
         String description,
         String address,
-        BigDecimal lat,
-        BigDecimal lon,
+        Coordinate coordinate,
         CuisineType cuisineType) {
-        this.nameAddress = name + address;
         this.name = name;
         this.description = description;
         this.address = address;
-        this.lat = lat;
-        this.lon = lon;
+        this.coordinate = coordinate;
         this.cuisineType = cuisineType;
         this.rating = 0.0;
     }
@@ -71,18 +77,16 @@ public class Restaurant {
      *
      * @param description 수정할 식당 설명
      * @param address     수정할 식당 주소
-     * @param lat         수정할 위도
-     * @param lon         수정할 경도
+     * @param coordinate  수정할 좌표
      */
     public void updateRestaurant(
         String description,
         String address,
-        BigDecimal lat,
-        BigDecimal lon) {
+        AddressCode addressCode,
+        Coordinate coordinate) {
         this.description = description;
-        this.nameAddress = this.name + address;
         this.address = address;
-        this.lat = lat;
-        this.lon = lon;
+        this.addressCode = addressCode;
+        this.coordinate = coordinate;
     }
 }
