@@ -3,6 +3,7 @@ package beforespring.yourfood.web.api.member;
 import beforespring.yourfood.web.request.member.LoginRequest;
 import beforespring.yourfood.web.request.member.SignupRequest;
 import beforespring.yourfood.web.request.member.UpdateUserSettingsRequest;
+import beforespring.yourfood.web.response.GenericResponse;
 import beforespring.yourfood.web.response.member.LoginResponse;
 import beforespring.yourfood.web.response.member.SignupResponse;
 import beforespring.yourfood.web.response.member.UpdateUserSettingResponse;
@@ -17,8 +18,8 @@ public class MemberController {
      * @return
      */
     @PostMapping
-    public SignupResponse registerMember(@RequestBody SignupRequest signupRequest) {
-        return new SignupResponse();
+    public GenericResponse<SignupResponse> registerMember(@RequestBody SignupRequest signupRequest) {
+        return null;
     }
 
     /**
@@ -27,8 +28,8 @@ public class MemberController {
      * @return
      */
     @PostMapping("/login")
-    public LoginResponse loginMember(@RequestBody LoginRequest loginRequest) {
-        return new LoginResponse();
+    public GenericResponse<LoginResponse> loginMember(@RequestBody LoginRequest loginRequest) {
+        return null;
     }
 
     /**
@@ -37,7 +38,7 @@ public class MemberController {
      * @return
      */
     @PatchMapping("/settings")
-    public UpdateUserSettingResponse updateUserSettings(@RequestBody UpdateUserSettingsRequest updateUserSettingsRequest) {
-        return new UpdateUserSettingResponse();
+    public GenericResponse<UpdateUserSettingResponse> updateUserSettings(@RequestBody UpdateUserSettingsRequest updateUserSettingsRequest) {
+        return null;
     }
 }

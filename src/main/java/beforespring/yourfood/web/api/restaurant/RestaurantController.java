@@ -1,5 +1,6 @@
 package beforespring.yourfood.web.api.restaurant;
 
+import beforespring.yourfood.web.response.GenericResponse;
 import beforespring.yourfood.web.response.restaurant.RegionListResponse;
 import beforespring.yourfood.web.response.restaurant.RestaurantDetailResponse;
 import beforespring.yourfood.web.response.restaurant.RestaurantListResponse;
@@ -13,8 +14,8 @@ public class RestaurantController {
      * @return
      */
     @GetMapping("/regions")
-    public RegionListResponse getRegions() {
-        return new RegionListResponse();
+    public GenericResponse<RegionListResponse> getRegions() {
+        return null;
     }
 
     /**
@@ -24,8 +25,8 @@ public class RestaurantController {
      */
 
     @GetMapping("/{restaurant_id}")
-    public RestaurantDetailResponse getRestaurantDetail(@PathVariable Long restaurant_id) {
-        return new RestaurantDetailResponse();
+    public GenericResponse<RestaurantDetailResponse> getRestaurantDetail(@PathVariable Long restaurant_id) {
+        return null;
     }
 
     /**
@@ -36,10 +37,10 @@ public class RestaurantController {
      * @return
      */
     @GetMapping
-    public RestaurantListResponse getRestaurantsByRegion(@RequestParam String region,
+    public GenericResponse<RestaurantListResponse> getRestaurantsByRegion(@RequestParam String region,
                                                          @RequestParam int range,
                                                          @RequestParam(required = false) String orderBy) {
-        return new RestaurantListResponse();
+        return null;
     }
 
     /**
@@ -51,12 +52,12 @@ public class RestaurantController {
      * @return
      */
     @GetMapping("/nearby")
-    public RestaurantListResponse getNearbyRestaurants(@RequestParam int range,
+    public GenericResponse<RestaurantListResponse> getNearbyRestaurants(@RequestParam int range,
                                                        @RequestParam String lat,
                                                        @RequestParam String lon,
                                                        @RequestParam(required = false) String orderBy) {
 
-        return new RestaurantListResponse();
+        return null;
     }
 
 }

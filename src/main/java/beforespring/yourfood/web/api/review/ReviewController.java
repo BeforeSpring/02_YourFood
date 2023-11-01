@@ -1,6 +1,8 @@
 package beforespring.yourfood.web.api.review;
 
 import beforespring.yourfood.web.request.review.ReviewRequest;
+import beforespring.yourfood.web.response.GenericResponse;
+import beforespring.yourfood.web.response.StatusCode;
 import beforespring.yourfood.web.response.review.ReviewResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,7 @@ public class ReviewController {
      * @return
      */
     @PostMapping
-    public ReviewResponse createReview(@RequestBody ReviewRequest reviewRequest) {
-        return new ReviewResponse();
+    public GenericResponse<ReviewResponse> createReview(@RequestBody ReviewRequest reviewRequest) {
+        return null;
     }
 }
