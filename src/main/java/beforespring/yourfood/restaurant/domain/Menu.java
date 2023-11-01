@@ -16,16 +16,17 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "varchar(1000)")
+    @Column(nullable = false)
     private String description;
 
-    private String price;
+    private String price; // nullable로 하고 null일 경우 싯가??
 
     @Builder
     public Menu(
