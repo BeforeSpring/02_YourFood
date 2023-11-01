@@ -17,11 +17,6 @@ import java.time.LocalDateTime;
             name = "idx__member__username__lunch_noti_status",
             columnList = "username, lunch_noti_status",
             unique = true
-        ),
-        @Index(
-            name = "idx__member__email",
-            columnList = "email",
-            unique = true
         )
     }
 )
@@ -35,11 +30,6 @@ public class Member {
 
     @Column(nullable = false)
     private String username;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_profile_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private AuthProfile authProfile;
-
     @Embedded
     private Coordinate coordinate;
 
@@ -50,9 +40,8 @@ public class Member {
     private LocalDateTime notiAgreedAt;
 
     @Builder
-    public Member(AuthProfile authProfile) {
-        this.username = authProfile.getUsername();
-        this.authProfile = authProfile;
+    public Member(String username) {
+        this.username = username;
         this.lunchNotiStatus = false;
     }
 
