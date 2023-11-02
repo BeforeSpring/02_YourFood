@@ -1,26 +1,42 @@
 package beforespring.yourfood.web.api.member;
 
+import beforespring.yourfood.auth.authmember.service.AuthMemberService;
+import beforespring.yourfood.web.api.common.StatusCode;
+import beforespring.yourfood.web.api.member.request.SignupMemberRequest;
 import beforespring.yourfood.web.api.member.request.LoginRequest;
-import beforespring.yourfood.web.api.member.request.SignupRequest;
 import beforespring.yourfood.web.api.member.request.UpdateUserSettingsRequest;
 import beforespring.yourfood.web.api.common.GenericResponse;
 import beforespring.yourfood.web.api.member.response.LoginResponse;
 import beforespring.yourfood.web.api.member.response.SignupResponse;
 import beforespring.yourfood.web.api.member.response.UpdateUserSettingResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
+@RequiredArgsConstructor
 public class MemberController {
+    private final AuthMemberService authMemberService;
+
     /**
-     * 새로운 회원 가입
+     * 회원가입
      *
-     * @param signupRequest 회원가입 정보
+     * @param signupMemberRequest
      * @return
      */
     @PostMapping
-    public GenericResponse<SignupResponse> registerMember(@RequestBody SignupRequest signupRequest) {
-        return null;
+    public GenericResponse<SignupResponse> registerMember(@RequestBody SignupMemberRequest signupMemberRequest) {
+        Long memberId = authMemberService.join(signupMemberRequest);
+        SignupResponse signupResponse = SignupResponse.builder()
+            .id(memberId)
+            .build();
+
+        GenericResponse genericResponse = GenericResponse.builder()
+            .statusCode(StatusCode.CREATED)
+            .message("Success")
+            .data(signupResponse).build();
+        return genericResponse;
+
     }
 
     /**
