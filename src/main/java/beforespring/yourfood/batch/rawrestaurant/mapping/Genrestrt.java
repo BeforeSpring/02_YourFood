@@ -3,11 +3,12 @@ package beforespring.yourfood.batch.rawrestaurant.mapping;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
+@ToString
 public class Genrestrt {
     /**
      * 공공 데이터 전체를 담기 위한 객체입니다.
