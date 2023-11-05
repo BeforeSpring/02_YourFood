@@ -55,7 +55,7 @@ public class Restaurant {
     @Column(name = "cuisine_type", nullable = false)
     private CuisineType cuisineType;
 
-    @Column(nullable = false, precision = 3, scale = 8, columnDefinition = "DECIMAL(3,8)")
+//    @Column(nullable = false, precision = 3, scale = 8, columnDefinition = "DECIMAL(3,8)")
     private BigDecimal rating;
 
     @Column(nullable = false)
