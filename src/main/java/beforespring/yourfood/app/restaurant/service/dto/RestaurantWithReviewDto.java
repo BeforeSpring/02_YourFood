@@ -23,7 +23,7 @@ public record RestaurantWithReviewDto(String name,
     public RestaurantWithReviewDto {
     }
 
-    public static RestaurantWithReviewDto createFromRestaurant(
+    public static RestaurantWithReviewDto createFrom(
         Restaurant restaurant, List<ReviewDto> reviewDtos) {
         return new RestaurantWithReviewDto(
             restaurant.getName(),
