@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-    name = "ssg_lat_lon",
+    name = "sgg_lat_lon",
     indexes = {
         @Index(
             name = "idx__si_do__si_gun_gu",
@@ -22,7 +22,9 @@ public class SggLatLon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sgg_lat_lon_id")
     private Long id;
+    @Column(name = "si_do")
     private String siDo;
+    @Column(name = "si_gun_gu")
     private String siGunGu;
     private String lon;
     private String lat;
