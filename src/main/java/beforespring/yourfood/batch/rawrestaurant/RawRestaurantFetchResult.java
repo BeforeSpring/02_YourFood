@@ -1,8 +1,6 @@
 package beforespring.yourfood.batch.rawrestaurant;
 
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
-import lombok.Getter;
-
 import java.util.List;
 
 /**
