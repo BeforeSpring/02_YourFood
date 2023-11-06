@@ -16,26 +16,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
 @Getter
 public class SggLatLonConfig {
-    private final List<SggLatLon> sggLatLons = new ArrayList<>();
-
-    @Bean
-    @Profile("withSggData")
-    public void run() {
-        Resource resource = new ClassPathResource("sggLatLon.csv");
-        parseSggCsv(resource);
-    }
-
     /**
      * sggLatLon.csv 파일을 SggLatLon List로 변환하기 위한 파서
      *
-     * @param resource 파싱할 파일
      */
-    private void parseSggCsv(Resource resource) {
+    private List<SggLatLon> parseSggCsv() {
+        Resource resource = new ClassPathResource("sggLatLon.csv");
+        List<SggLatLon> sggLatLons = new ArrayList<>();
         try {
             InputStream inputStream = resource.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -55,10 +48,11 @@ public class SggLatLonConfig {
         } catch (IOException e) {
             throw new CsvIOException(e);
         }
+        return Collections.unmodifiableList(sggLatLons);
     }
 
     @Bean
     public SggLatLonRepository sggLatLonRepository() {
-        return new SggLatLonRepositoryImpl(sggLatLons);
+        return new SggLatLonRepositoryImpl(parseSggCsv());
     }
 }

@@ -6,9 +6,7 @@ import beforespring.yourfood.config.SggLatLonConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 
@@ -17,14 +15,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class SggLatLonRepositoryImplTest {
-    private SggLatLonRepository sggLatLonRepository;
-
-    @BeforeEach
-    public void setup() {
-        SggLatLonConfig sggLatLonConfig = new SggLatLonConfig();
-        sggLatLonConfig.run();
-        sggLatLonRepository = sggLatLonConfig.sggLatLonRepository();
-    }
+    private SggLatLonConfig sggLatLonConfig = new SggLatLonConfig();
+    private SggLatLonRepository sggLatLonRepository = sggLatLonConfig.sggLatLonRepository();
 
     @Test
     @DisplayName("sggLatLonRepository.findAll()을 싱글톤 객체를 반환해야 함")
