@@ -6,21 +6,24 @@ import beforespring.yourfood.config.SggLatLonConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest
 class SggLatLonRepositoryImplTest {
-
     private SggLatLonRepository sggLatLonRepository;
 
     @BeforeEach
     public void setup() {
         SggLatLonConfig sggLatLonConfig = new SggLatLonConfig();
         sggLatLonConfig.run();
-        sggLatLonRepository = new SggLatLonRepositoryImpl(sggLatLonConfig);
+        sggLatLonRepository = sggLatLonConfig.sggLatLonRepository();
     }
 
     @Test

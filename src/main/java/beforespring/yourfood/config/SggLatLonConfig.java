@@ -1,6 +1,8 @@
 package beforespring.yourfood.config;
 
 import beforespring.yourfood.app.utils.SggLatLon;
+import beforespring.yourfood.app.utils.SggLatLonRepository;
+import beforespring.yourfood.app.utils.infra.SggLatLonRepositoryImpl;
 import beforespring.yourfood.config.exception.CsvIOException;
 import lombok.Getter;
 import org.springframework.context.annotation.Bean;
@@ -53,5 +55,10 @@ public class SggLatLonConfig {
         } catch (IOException e) {
             throw new CsvIOException(e);
         }
+    }
+
+    @Bean
+    public SggLatLonRepository sggLatLonRepository() {
+        return new SggLatLonRepositoryImpl(sggLatLons);
     }
 }

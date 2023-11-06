@@ -2,20 +2,22 @@ package beforespring.yourfood.app.utils.infra;
 
 import beforespring.yourfood.app.utils.SggLatLon;
 import beforespring.yourfood.app.utils.SggLatLonRepository;
-import beforespring.yourfood.config.SggLatLonConfig;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class SggLatLonRepositoryImpl implements SggLatLonRepository {
-    private final SggLatLonConfig sggLatLonConfig;
+    private final List<SggLatLon> sggLatLonList;
 
     @Override
     public List<SggLatLon> findAll() {
-        return Collections.unmodifiableList(sggLatLonConfig.getSggLatLons());
+        return Collections.unmodifiableList(sggLatLonList);
     }
 }
