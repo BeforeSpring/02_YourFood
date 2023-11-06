@@ -1,9 +1,8 @@
 package beforespring.yourfood.config;
 
 import beforespring.yourfood.app.utils.SggLatLon;
-import beforespring.yourfood.app.utils.SggLatLonRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import beforespring.yourfood.config.exception.CsvIOException;
+import lombok.Getter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,43 +16,32 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Configuration
-@RequiredArgsConstructor
+@Getter
 public class SggLatLonConfig {
-    private final SggLatLonRepository sggLatLonRepository;
+    private final List<SggLatLon> sggLatLons = new ArrayList<>();
 
     @Bean
     @Profile("withSggData")
     public void run() {
-        try {
-            Resource resource = new ClassPathResource("sggLatLon.csv");
-
-            List<SggLatLon> sggLatLons = parseSggData(resource);
-            sggLatLonRepository.saveAll(sggLatLons);
-        } catch (IOException e) {
-            log.info(e.getMessage());
-        }
+        Resource resource = new ClassPathResource("sggLatLon.csv");
+        parseSggCsv(resource);
     }
 
     /**
-     * sggLatLon.csv 파일을 엔티티로 변환하기 위한 파서
+     * sggLatLon.csv 파일을 SggLatLon List로 변환하기 위한 파서
      *
      * @param resource 파싱할 파일
-     * @return 생성된 엔티티 객체 List
-     * @throws IOException 입출력 예외
      */
-    private List<SggLatLon> parseSggData(Resource resource) throws IOException {
-        List<SggLatLon> sggLatLons = new ArrayList<>();
-
-        try (InputStream inputStream = resource.getInputStream();
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+    private void parseSggCsv(Resource resource) {
+        try {
+            InputStream inputStream = resource.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader.readLine();
             String line;
-            reader.readLine(); // 첫 번째 라인을 읽어넘기 (헤더)
 
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(","); // CSV 파일에서 데이터를 읽어옴 (쉼표로 분리)
-
+                String[] data = line.split(",");
                 sggLatLons.add(
                     SggLatLon.builder()
                         .siDo(data[0])
@@ -62,7 +50,8 @@ public class SggLatLonConfig {
                         .lat(data[3]).build()
                 );
             }
+        } catch (IOException e) {
+            throw new CsvIOException(e);
         }
-        return sggLatLons;
     }
 }
