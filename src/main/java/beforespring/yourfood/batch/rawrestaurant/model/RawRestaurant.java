@@ -231,4 +231,8 @@ public class RawRestaurant {
     public boolean isNewlyFetched() {
         return this.id == null;
     }
+
+    public void markInfoUpdatedToRestaurant() {
+        this.hasNonUpdatedInfo = false;
+    }
 }
