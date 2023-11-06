@@ -20,10 +20,9 @@ public class MemberController {
      *
      * @param updateLunchRecommendationConsent 업데이트 정보
      */
-    @PatchMapping("/lunch-recommendation")
+    @PatchMapping("/lunch-recommendation-consent")
     public GenericResponse<UpdateUserSettingResponse> updateLunchRecommendation(@RequestBody UpdateLunchRecommendationConsent updateLunchRecommendationConsent) {
         memberService.updateLunchRecommendationConsent(updateLunchRecommendationConsent.lunchRecommendationConsent(), updateLunchRecommendationConsent.memberId());
-
         return GenericResponse.<UpdateUserSettingResponse>builder()
             .statusCode(StatusCode.CREATED)
             .message("Success")
