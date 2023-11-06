@@ -1,6 +1,7 @@
 package beforespring.yourfood.app.utils;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface SggLatLonRepository extends JpaRepository<SggLatLon, Long> {
+public interface SggLatLonRepository {
+    List<SggLatLon> findAll();
 }
