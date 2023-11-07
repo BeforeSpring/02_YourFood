@@ -1,4 +1,4 @@
-package beforespring.yourfood.app.restaurant.domain.infra;
+package beforespring.yourfood.app.restaurant.infra;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
 

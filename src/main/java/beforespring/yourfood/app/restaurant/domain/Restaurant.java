@@ -1,6 +1,6 @@
 package beforespring.yourfood.app.restaurant.domain;
 
-import beforespring.yourfood.app.restaurant.domain.infra.CuisineTypeConverter;
+import beforespring.yourfood.app.restaurant.infra.CuisineTypeConverter;
 import beforespring.yourfood.app.utils.Coordinates;
 import lombok.AccessLevel;
 import lombok.Builder;
