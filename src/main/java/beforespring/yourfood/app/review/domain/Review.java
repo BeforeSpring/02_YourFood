@@ -44,6 +44,8 @@ public class Review {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "rating_reflected_at")
+    private LocalDateTime ratingReflectedAt;
 
     @Builder
     public Review(
@@ -55,6 +57,7 @@ public class Review {
         this.restaurant = restaurant;
         this.content = content;
         this.rating = rating;
+        this.createdAt = LocalDateTime.now();
     }
 
     /**
@@ -66,5 +69,14 @@ public class Review {
     public void updateReview(String content, Integer rating) {
         this.content = content;
         this.rating = rating;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * 리뷰 평점이 식당 평균 평점에 반영된 시각을 저장
+     * @param time 반영된 시각
+     */
+    public void updateRatingReflectedAt(LocalDateTime time) {
+        this.ratingReflectedAt = time;
     }
 }
