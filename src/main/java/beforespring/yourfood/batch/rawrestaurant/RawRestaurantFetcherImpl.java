@@ -16,8 +16,8 @@ public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManager manager;
 
     @Override
-    public RawRestaurantFetchResult find(int page, int pageSize) {
-        Genrestrt genrestrt = manager.fetch(page, pageSize);
+    public RawRestaurantFetchResult find(int page, int pageSize, String keyword) {
+        Genrestrt genrestrt = manager.fetch(page, pageSize, keyword);
 
         List<RawRestaurant> rawRestaurants = new ArrayList<>();
 

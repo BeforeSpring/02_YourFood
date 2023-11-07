@@ -14,18 +14,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @Slf4j
-@Setter
 @RequiredArgsConstructor
 public class OpenApiManager {
-    private String baseUrl = "https://openapi.gg.go.kr";
-    private String apiUrl = "/Genrestrtlunch";
 
     private final ApiConfig apiConfig;
 
     private final XmlMapper mapper;
 
-    public Genrestrt fetch(int page, int pageSize) {
-        String url = makeUrl(page, pageSize);
+    public Genrestrt fetch(int page, int pageSize, String keyword) {
+        String url = makeUrl(page, pageSize, keyword);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
@@ -39,9 +36,10 @@ public class OpenApiManager {
         return lunch;
     }
 
-    private String makeUrl(int page, int pageSize) {
+    private String makeUrl(int page, int pageSize, String keyword) {
+        String baseUrl = "https://openapi.gg.go.kr";
         return UriComponentsBuilder.fromHttpUrl(baseUrl)
-                   .path(apiUrl)
+                   .path(apiConfig.getApiKeyword(keyword))
                    .queryParam("KEY", apiConfig.getDeveloperApiKey())
                    .queryParam("pIndex", page)
                    .queryParam("pSize", pageSize)

@@ -8,8 +8,8 @@ class DummyRawRestaurantFetcherTest {
 
     @Test
     void find() {
-        RawRestaurantFetchResult rawRestaurantFetchResult = mockRawRestaurantFetcher.find(5, 10);
-        RawRestaurantFetchResult rawRestaurantFetchResult2 = mockRawRestaurantFetcher.find(6, 10);
+        RawRestaurantFetchResult rawRestaurantFetchResult = mockRawRestaurantFetcher.find(5, 10, "lunch");
+        RawRestaurantFetchResult rawRestaurantFetchResult2 = mockRawRestaurantFetcher.find(6, 10, "lunch");
         System.out.println();
     }
 }

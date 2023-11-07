@@ -6,6 +6,6 @@ package beforespring.yourfood.batch.rawrestaurant;
  */
 public interface RawRestaurantFetcher {
 
-    RawRestaurantFetchResult find(int page, int pageSize);
+    RawRestaurantFetchResult find(int page, int pageSize, String keyword);
 
 }

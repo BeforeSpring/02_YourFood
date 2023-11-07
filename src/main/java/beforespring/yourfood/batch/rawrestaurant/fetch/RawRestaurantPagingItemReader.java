@@ -33,7 +33,8 @@ public class RawRestaurantPagingItemReader extends
         }
 
         RawRestaurantFetchResult rawRestaurantFetchResult = rawRestaurantFetcher.find(getPage() + 1,
-            getPageSize());  // 1페이지부터 시작
+            getPageSize(),
+            "lunch");  // 1페이지부터 시작
 
         List<RawRestaurant> rawRestaurants = rawRestaurantFetchResult.rawRestaurants();
         Map<RawRestaurantId, RawRestaurant> existingRawRestaurantsMap = readFromDb(rawRestaurants);

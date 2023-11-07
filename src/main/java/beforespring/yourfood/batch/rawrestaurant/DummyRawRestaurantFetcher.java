@@ -58,7 +58,7 @@ public class DummyRawRestaurantFetcher implements RawRestaurantFetcher {
 
 
     @Override
-    public RawRestaurantFetchResult find(int page, int pageSize) {
+    public RawRestaurantFetchResult find(int page, int pageSize, String keyword) {
         int from = (page - 1) * pageSize;
         int to = Math.min(contents.size(), page * pageSize);
         List<RawRestaurant> rawRestaurants = contents.subList(from, to);

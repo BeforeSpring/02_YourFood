@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenApiManagerTest {
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
     private OpenApiManager openApiManager;
 
     private final XmlMapper xmlMapper = new XmlMapper();
@@ -62,7 +60,7 @@ public class OpenApiManagerTest {
         int page = 1;
         int pageSize = 10;
 
-        Genrestrt genrestrt = openApiManager.fetch(page, pageSize);
+        Genrestrt genrestrt = openApiManager.fetch(page, pageSize, "lunch");
 
         assertNotNull(genrestrt, "Genrestrt 객체가 null이 아니라면 API 호출 및 매핑이 성공적으로 수행된 것으로 가정");
         /**
@@ -78,15 +76,10 @@ public class OpenApiManagerTest {
      */
     @Test
     public void test_data_fetch_another_api_url() {
-        String apiUrl = "/Genrestrtcate";
-        String url = "https://openapi.gg.go.kr";
         int page = 1;
         int pageSize = 10;
 
-        openApiManager.setApiUrl(apiUrl);
-        openApiManager.setBaseUrl(url);
-
-        Genrestrt genrestrt = openApiManager.fetch(page, pageSize);
+        Genrestrt genrestrt = openApiManager.fetch(page, pageSize,"china");
 
         assertNotNull(genrestrt, "Genrestrt 객체가 null이 아니라면 API 호출 및 매핑이 성공적으로 수행된 것으로 가정");
         /**
@@ -96,4 +89,6 @@ public class OpenApiManagerTest {
             System.out.println(row.toString());
         }
     }
+
+    // api url -> 생성자로 받게끔
 }

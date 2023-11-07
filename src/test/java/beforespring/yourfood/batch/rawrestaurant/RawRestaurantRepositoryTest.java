@@ -25,7 +25,7 @@ class RawRestaurantRepositoryTest {
 
     @BeforeEach
     void init() {
-        RawRestaurantFetchResult rawRestaurantFetchResult = dummyRawRestaurantFetcher.find(1, 10);
+        RawRestaurantFetchResult rawRestaurantFetchResult = dummyRawRestaurantFetcher.find(1, 10, "lunch");
         given = rawRestaurantFetchResult.rawRestaurants().get(0);
         em.persist(given);
         em.flush();

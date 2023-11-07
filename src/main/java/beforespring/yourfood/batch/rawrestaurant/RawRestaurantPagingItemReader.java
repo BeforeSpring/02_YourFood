@@ -22,7 +22,7 @@ public class RawRestaurantPagingItemReader extends AbstractPagingItemReader<RawR
             results.clear();
         }
 
-        RawRestaurantFetchResult rawRestaurantFetchResult = rawRestaurantFetcher.find(getPage() + 1, getPageSize());  // 1페이지부터 시작
+        RawRestaurantFetchResult rawRestaurantFetchResult = rawRestaurantFetcher.find(getPage() + 1, getPageSize(), "lunch");  // 1페이지부터 시작
 
         if (getPage() == 0) {  // first page
             if (logger.isDebugEnabled()) {
