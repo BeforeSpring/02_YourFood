@@ -1,4 +1,4 @@
-package beforespring.yourfood.app.restaurant.domain.infra;
+package beforespring.yourfood.app.restaurant.infra;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
 
@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 @Converter
 public class CuisineTypeConverter implements AttributeConverter<SortedSet<CuisineType>, String> {
     /**
-     * Enum type의 CuisineType set을 쉼표로 구분하여 String으로 반환
+     * Enum type의 CuisineType SortedSet을 공백으로 구분하여 String으로 반환
      *
      * @param attribute the entity attribute value to be converted
-     * @return 쉽표로 구분된 String
+     * @return 공백으로 구분된 String
      */
     @Override
     public String convertToDatabaseColumn(SortedSet<CuisineType> attribute) {
@@ -29,7 +29,7 @@ public class CuisineTypeConverter implements AttributeConverter<SortedSet<Cuisin
     }
 
     /**
-     * String을 쉼표로 구분하여 분리하고 CusineType set로 반환
+     * String을 공백으로 분리하고 CusineType set로 반환
      *
      * @param dbData the data from the database column to be
      *               converted
@@ -49,3 +49,4 @@ public class CuisineTypeConverter implements AttributeConverter<SortedSet<Cuisin
         return cuisineTypeSet;
     }
 }
+

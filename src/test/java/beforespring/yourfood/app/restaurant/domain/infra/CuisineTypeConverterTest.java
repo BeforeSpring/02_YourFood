@@ -1,11 +1,10 @@
 package beforespring.yourfood.app.restaurant.domain.infra;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
+import beforespring.yourfood.app.restaurant.infra.CuisineTypeConverter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
