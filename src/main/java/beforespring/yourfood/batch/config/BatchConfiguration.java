@@ -15,6 +15,7 @@ import beforespring.yourfood.batch.rawrestaurant.update.RestaurantUpdateReader;
 import beforespring.yourfood.batch.rawrestaurant.update.RestaurantUpdateReaderRepository;
 import beforespring.yourfood.batch.rawrestaurant.update.RestaurantUpdateReaderRepositoryQueryDslImpl;
 import beforespring.yourfood.batch.rawrestaurant.update.RestaurantUpdateReaderResult;
+import beforespring.yourfood.batch.scheduler.BatchScheduler;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +49,16 @@ public class BatchConfiguration {
     private final RestaurantRepository restaurantRepository;
     private final EntityManager em;
     private final RawRestaurantFetcherImpl rawRestaurantFetcher;
-
+    private final JobLauncher jobLauncher;
     private final static String SYNC_JOB_NAME = "syncJob";
     private final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter
                                                                    .ofPattern("yyyy-MM-dd'T'HH:mm:ss.nnnnnn");
     private final static int CHUNK_SIZE = 500;
+
+    @Bean
+    public BatchScheduler batchScheduler() {
+        return new BatchScheduler(jobLauncher, restApiSyncJob());
+    }
 
     @Bean
     public Job restApiSyncJob() {
