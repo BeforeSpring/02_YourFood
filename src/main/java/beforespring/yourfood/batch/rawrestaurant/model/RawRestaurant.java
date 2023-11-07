@@ -61,7 +61,7 @@ public class RawRestaurant {
     private String REFINE_WGS84_LOGT;
 
     /**
-     * 변경된 값이 Restaurant에 반영되었으면 true, 아직 반영되지 않았으면 false
+     * 변경된 값이 Restaurant에 반영되었으면 false, 아직 반영되지 않았으면 true
      */
     @Column(name = "has_non_updated_info")
     private boolean hasNonUpdatedInfo;
