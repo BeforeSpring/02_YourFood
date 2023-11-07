@@ -78,6 +78,8 @@ public class RawRestaurant {
     @Column(name = "crucial_info_fetched_at")
     private LocalDateTime crucialInfoFetchedAt;
 
+    private String sido;
+
     @Builder
     public RawRestaurant(
         Long id,
@@ -105,7 +107,8 @@ public class RawRestaurant {
         String REFINE_WGS84_LOGT,
         Boolean hasNonUpdatedInfo,
         LocalDateTime crucialInfoFetchedAt,
-        LocalDateTime fetchedAt
+        LocalDateTime fetchedAt,
+        String sido
     ) {
         this.id = id;
         this.rawRestaurantId = new RawRestaurantId(BIZPLC_NM, REFINE_ROADNM_ADDR);
@@ -132,6 +135,7 @@ public class RawRestaurant {
 
         LocalDateTime now = LocalDateTime.now();
 
+        this.sido = sido;
         // null인 경우 외부에서 읽어온 값.
         if (hasNonUpdatedInfo != null) {
             this.hasNonUpdatedInfo = hasNonUpdatedInfo;
@@ -140,6 +144,7 @@ public class RawRestaurant {
         this.crucialInfoFetchedAt = crucialInfoFetchedAt == null ? now : crucialInfoFetchedAt;
         // null인 경우 외부에서 읽어온 값.
         this.fetchedAt = fetchedAt == null ? now : fetchedAt;
+
     }
 
 
@@ -234,5 +239,10 @@ public class RawRestaurant {
 
     public void markInfoUpdatedToRestaurant() {
         this.hasNonUpdatedInfo = false;
+    }
+
+    // todo refactor 시도정보는 fetcher에서 붙여줘야함.
+    public void setSido(String sido) {
+        this.sido = sido;
     }
 }

@@ -1,5 +1,6 @@
 package beforespring.yourfood.batch.rawrestaurant.update;
 
+import beforespring.yourfood.app.restaurant.domain.AddressCode;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
@@ -47,7 +48,11 @@ public class RestaurantUpdateProcessor implements ItemProcessor<RestaurantUpdate
                            new BigDecimal(rawRestaurant.getREFINE_WGS84_LAT()),
                            new BigDecimal(rawRestaurant.getREFINE_WGS84_LOGT()))
                    )
+                   .addressCode(new AddressCode(
+                       rawRestaurant.getSido(),
+                       rawRestaurant.getSIGUN_NM()))
                    .operating(operating)
+                   .description("")  // not null 오류 방지용 초기값. todo 간단 정보 들어가도록 수정
                    .build();
     }
 }
