@@ -23,7 +23,6 @@ public class ApiConfig {
     }
 
     public String getApiKeyword(String keyIdentifier) {
-        // Retrieve the API key using the key identifier
         return keywords.get(keyIdentifier);
     }
 
