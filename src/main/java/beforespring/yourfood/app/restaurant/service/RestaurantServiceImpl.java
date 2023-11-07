@@ -29,16 +29,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         List<ReviewDto> reviewDtos = ReviewDto.mapReviewsToReviewDtos(reviews);
 
         return RestaurantWithReviewDto.createFrom(restaurant, reviewDtos);
-
     }
 
     @Override
     public List<Restaurant> getRestaurantsByRating(boolean descendingOrder) {
         List<Restaurant> restaurants = restaurantRepository.findAll();
-
         Comparator<Restaurant> ratingComparator = byRatingAverage(descendingOrder);
-        restaurants.sort(ratingComparator);
 
+        // 평점순으로 정렬
+        restaurants.sort(ratingComparator);
         return restaurants;
     }
 
