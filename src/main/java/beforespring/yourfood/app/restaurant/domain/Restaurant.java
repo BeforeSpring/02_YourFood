@@ -1,6 +1,7 @@
 package beforespring.yourfood.app.restaurant.domain;
 
 import beforespring.yourfood.app.restaurant.infra.CuisineTypeConverter;
+import beforespring.yourfood.app.review.domain.Review;
 import beforespring.yourfood.app.utils.Coordinates;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(
@@ -56,10 +58,10 @@ public class Restaurant {
     @Embedded
     private Coordinates coordinates;
 
-    @Enumerated(EnumType.STRING)
+    // todo: refactoring
     @Column(name = "cuisine_type")
     @Convert(converter = CuisineTypeConverter.class)
-    private SortedSet<CuisineType> cuisineType;
+    private Set<CuisineType> cuisineType = new TreeSet<>();
 
     @Column(nullable = false, precision = 7, scale = 5, columnDefinition = "DECIMAL(7,5)")
     private BigDecimal rating;
@@ -82,7 +84,7 @@ public class Restaurant {
         String address,
         AddressCode addressCode,
         Coordinates coordinates,
-        SortedSet<CuisineType> cuisineType,
+        Set<CuisineType> cuisineType,
         Boolean operating) {
         this.name = name;
         this.description = description;
@@ -122,17 +124,86 @@ public class Restaurant {
     }
 
     /**
-     * 식당 평점 수정
+     * 새로운 리뷰 중 반영되지 않은 평점을 업데이트 함.
      *
-     * @param ratings 평점
+     * @param reviews 새로운 리뷰 List
      */
-    public void updateRating(List<Integer> ratings) {
-        int sum = ratings.stream().reduce(0, Integer::sum);
-        BigDecimal avg = this.rating
-                             .multiply(new BigDecimal(this.updatedRatingNum))
-                             .add(new BigDecimal(sum))
-                             .divide(new BigDecimal(ratings.size() + this.updatedRatingNum), RoundingMode.HALF_DOWN);
-        this.updatedRatingNum += ratings.size();
+    public void updateNewReviewRatings(List<Review> reviews) {
+        int ratingSum = reviews.stream()
+                            .map(Review::getRating)
+                            .reduce(0, Integer::sum);
+
+        this.rating = this.rating
+                          .multiply(new BigDecimal(this.updatedRatingNum))
+                          .add(new BigDecimal(ratingSum))
+                          .divide(new BigDecimal(this.updatedRatingNum + reviews.size()), RoundingMode.HALF_UP)
+                          .setScale(5, RoundingMode.HALF_UP);
+        this.updatedRatingNum += reviews.size();
         this.ratingUpdatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * 수정된 리뷰 중 반영되지 않은 평점을 업데이트 함
+     *
+     * @param reviews 수정된 리뷰 List
+     */
+    public void updateModifiedReviewRatings(List<Review> reviews) {
+        int beforeRatingSum = reviews.stream()
+                                  .map(Review::getBeforeRating)
+                                  .reduce(0, Integer::sum);
+        int ratingSum = reviews.stream()
+                            .map(Review::getRating)
+                            .reduce(0, Integer::sum);
+
+        this.rating = this.rating
+                          .multiply(new BigDecimal(this.updatedRatingNum))
+                          .add(new BigDecimal(ratingSum - beforeRatingSum))
+                          .divide(new BigDecimal(this.updatedRatingNum), RoundingMode.HALF_UP)
+                          .setScale(5, RoundingMode.HALF_UP);
+        this.ratingUpdatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * 수정된 리뷰의 평점을 반영함.
+     * 리뷰가 100개 초과되면 즉각 반영하지 않음.
+     *
+     * @param review 수정된 리뷰
+     */
+    public boolean updateModifiedReviewRating(Review review) {
+        if (this.updatedRatingNum >= 100)
+            return false;
+        this.rating = this.rating
+                          .multiply(new BigDecimal(this.updatedRatingNum))
+                          .add(new BigDecimal(review.getRating() - review.getBeforeRating()))
+                          .divide(new BigDecimal(this.updatedRatingNum), RoundingMode.HALF_UP)
+                          .setScale(5, RoundingMode.HALF_UP);
+        this.ratingUpdatedAt = LocalDateTime.now();
+        return true;
+    }
+
+    /**
+     * 새로운 리뷰의 평점을 반영함.
+     * 리뷰가 100개 초과되면 즉각 반영하지 않음.
+     *
+     * @param review 새로운 리뷰
+     */
+    public boolean updateNewReviewRating(Review review) {
+        if (this.updatedRatingNum >= 100)
+            return false;
+        this.rating = this.rating
+                          .multiply(BigDecimal.valueOf(this.updatedRatingNum).setScale(5))
+                          .add(BigDecimal.valueOf(review.getRating()).setScale(5))
+                          .divide(BigDecimal.valueOf(++this.updatedRatingNum).setScale(5), RoundingMode.HALF_UP)
+                          .setScale(5, RoundingMode.HALF_UP);
+        this.ratingUpdatedAt = LocalDateTime.now();
+        return true;
+    }
+
+    public void addCuisineType(Set<CuisineType> cuisineTypes) {
+        this.cuisineType.addAll(cuisineTypes);
+    }
+
+    public void addCuisineType(CuisineType cuisineType) {
+        this.cuisineType.add(cuisineType);
     }
 }
