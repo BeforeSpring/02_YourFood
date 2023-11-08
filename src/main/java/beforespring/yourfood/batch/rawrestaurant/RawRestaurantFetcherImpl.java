@@ -5,20 +5,25 @@ import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManager;
 import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.mapping.Row;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
-import beforespring.yourfood.config.ApiConfig;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * 해당 fetcher는 다른 공공데이터 url로 사용할 수 없기 떄문에 class 명을 경기도 관련으로 바꿔야됨
+ * <p>
+ * Refactoring 필요함
+ */
+
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManagerFactory openApiManagerFactory;
-    private final ApiConfig apiConfig;
     private final String keyword;
-    // 이후 경기도 관련으로 이름 바꿔야됨
+
+    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String keyword) {
+        this.openApiManagerFactory = openApiManagerFactory;
+        this.keyword = keyword;
+    }
+
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
         OpenApiManager manager = openApiManagerFactory.createOpenApiManager(page, pageSize, keyword);
@@ -55,7 +60,6 @@ public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
 
             rawRestaurants.add(rawRestaurant);
         }
-
         return new RawRestaurantFetchResult(page, pageSize, genrestrt.getHead().getListTotalCount(), rawRestaurants);
     }
 }

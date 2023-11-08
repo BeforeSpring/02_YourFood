@@ -1,26 +1,30 @@
 package beforespring.yourfood.batch.rawrestaurant.mapping;
 
-import beforespring.yourfood.config.ApiConfig;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Component
-@RequiredArgsConstructor
+import java.util.Map;
+
 public class OpenApiManagerFactory {
 
-    private final ApiConfig apiConfig;
+    private final Map<String, String> cuisineTypeNames;
     private final XmlMapper mapper;
+    private final String devKey;
 
-    public OpenApiManager createOpenApiManager(int page, int pageSize, String keyword) {
+    public OpenApiManager createOpenApiManager(int page, int pageSize, String cuisineTypeName) {
         String baseUrl = "https://openapi.gg.go.kr";
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                             .path(keyword)
-                             .queryParam("KEY", apiConfig.getDeveloperApiKey())
-                             .queryParam("pIndex", page)
-                             .queryParam("pSize", pageSize)
-                             .toUriString();
+                         .path(cuisineTypeNames.get(cuisineTypeName))
+                         .queryParam("KEY", devKey)
+                         .queryParam("pIndex", page)
+                         .queryParam("pSize", pageSize)
+                         .toUriString();
         return new OpenApiManager(url, mapper);
+    }
+
+    public OpenApiManagerFactory(Map<String, String> cuisineTypeNames, XmlMapper mapper, String devKey) {
+        this.cuisineTypeNames = cuisineTypeNames;
+        this.mapper = mapper;
+        this.devKey = devKey;
     }
 }

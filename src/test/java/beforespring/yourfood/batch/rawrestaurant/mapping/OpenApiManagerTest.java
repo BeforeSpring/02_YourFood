@@ -26,7 +26,7 @@ public class OpenApiManagerTest {
         XmlMapper xmlMapper = new XmlMapper();
 
         // OpenApiManagerFactory를 사용하여 OpenApiManager를 생성합니다.
-        OpenApiManagerFactory openApiManagerFactory = new OpenApiManagerFactory(apiConfig, xmlMapper);
+        OpenApiManagerFactory openApiManagerFactory = new OpenApiManagerFactory(apiConfig.getCuisineTypeNames(), xmlMapper, apiConfig.getDeveloperApiKey());
         openApiManager = openApiManagerFactory.createOpenApiManager(1, 10, "lunch");
     }
 
@@ -63,9 +63,6 @@ public class OpenApiManagerTest {
      */
     @Test
     public void test_data_mapping_use_OpenApiManager() {
-        int page = 1;
-        int pageSize = 10;
-
         Genrestrt genrestrt = openApiManager.fetch();
 
         assertNotNull(genrestrt, "Genrestrt 객체가 null이 아니라면 API 호출 및 매핑이 성공적으로 수행된 것으로 가정");
