@@ -31,8 +31,8 @@ public class OpenApiManager {
         this.restTemplate = restTemplate;
     }
 
-    private String addPageAndSizeParameters(String url, int page, int pageSize) {
-        return UriComponentsBuilder.fromUriString(url)
+    private String addPageAndSizeParameters(String baseUrl, int page, int pageSize) {
+        return UriComponentsBuilder.fromUriString(baseUrl)
                    .queryParam("pIndex", page)
                    .queryParam("pSize", pageSize)
                    .toUriString();

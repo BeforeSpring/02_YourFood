@@ -27,7 +27,7 @@ public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     //시도, 퀴신 타입 추가
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        Genrestrt genrestrt = openApiManager.fetch();
+        Genrestrt genrestrt = openApiManager.fetch(page, pageSize);
 
         List<RawRestaurant> rawRestaurants = genrestrt.getRow().stream()
                                                  .map(row -> RawRestaurant.builder()
