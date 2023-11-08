@@ -8,12 +8,12 @@ public interface ReviewService {
     /**
      * 신규 리뷰 등록, 레스로랑 평점에 반영 여부를 저장함.
      *
-     * @param memberId     리뷰 작성 회원 id
      * @param restaurantId 식당 id
+     * @param memberId     리뷰 작성 회원 id
      * @param content      리뷰 내용
      * @param rating       식당 평점
      */
-    public void saveReview(Long memberId, Long restaurantId, String content, Integer rating);
+    public void saveReview(Long restaurantId, Long memberId, String content, Integer rating);
 
     /**
      * 리뷰를 수정하고, 레스로랑 평점에 반영 여부를 저장함.

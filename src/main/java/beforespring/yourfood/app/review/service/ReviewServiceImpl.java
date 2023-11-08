@@ -25,7 +25,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final RestaurantRepository restaurantRepository;
 
     @Override
-    public void saveReview(Long memberId, Long restaurantId, String content, Integer rating) {
+    public void saveReview(Long restaurantId, Long memberId, String content, Integer rating) {
         Member member = memberRepository.getReferenceById(memberId);
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Review review = Review.builder()
