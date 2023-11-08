@@ -1,6 +1,7 @@
 package beforespring.yourfood.auth.authmember.domain;
 
 import beforespring.yourfood.auth.authmember.exception.PasswordMismatchException;
+import beforespring.yourfood.auth.authmember.service.exception.ConfirmStateException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -97,5 +98,11 @@ public class AuthMember {
 
     public void updateYourFoodId(Long yourFoodMemberId) {
         this.yourFoodId = yourFoodMemberId;
+    }
+
+    public void verifyConfirmState() {
+        if (!this.status.equals(ConfirmStatus.AUTHORIZED)) {
+            throw new ConfirmStateException();
+        }
     }
 }

@@ -89,12 +89,14 @@ public class AuthMemberServiceImpl implements AuthMemberService {
         authMember.joinConfirm();
     }
 
-    // todo confirm 되지 않은 회원의 authenticate 시도 차단, your food member 의 ID와 auth member id 모두 기입
+    // todo your food member 의 ID와 auth member id 모두 기입
     @Override
     public AuthToken authenticate(PasswordAuth passwordAuth) {
         AuthMember authMember = authMemberRepository.findByUsername(passwordAuth.username())
                                     .orElseThrow(AuthMemberNotFoundException::new);
+
         authMember.verifyPassword(passwordAuth.password(), passwordHasher);
+        authMember.verifyConfirmState();
 
         return jwtIssuer.issue(authMember.getYourFoodId(), authMember.getUsername());
     }
