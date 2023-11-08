@@ -7,42 +7,44 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Component
 @Slf4j
 @RequiredArgsConstructor
 public class OpenApiManager {
-    private final String baseUrl = "https://openapi.gg.go.kr";
-    private final String apiUrl = "/Genrestrtlunch";
 
     private final ApiConfig apiConfig;
 
     private final XmlMapper mapper;
 
-    public Genrestrt fetch(int page, int pageSize)  {
-        String url = makeUrl(page, pageSize);
+    public Genrestrt fetch(int page, int pageSize, String urlString) {
+        String url = makeUrl(page, pageSize, urlString);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
-        Genrestrt lunch;
+        Genrestrt data;
 
         try {
-            lunch = mapper.readValue(responseEntity.getBody(), Genrestrt.class);
+            data = mapper.readValue(responseEntity.getBody(), Genrestrt.class);
         } catch (JsonProcessingException e) {
             throw new MapperProcessingException(e);
         }
-        return lunch;
+        return data;
     }
 
-    private String makeUrl(int page, int pageSize) {
+    private String makeUrl(int page, int pageSize, String keyword) {
+        String baseUrl = "https://openapi.gg.go.kr";
         return UriComponentsBuilder.fromHttpUrl(baseUrl)
-                   .path(apiUrl)
+                   .path(keyword)
                    .queryParam("KEY", apiConfig.getDeveloperApiKey())
                    .queryParam("pIndex", page)
                    .queryParam("pSize", pageSize)
                    .toUriString();
+    }
+
+    public OpenApiManager(int page, int pageSize, String keyword, ApiConfig apiConfig, XmlMapper mapper) {
+        this.apiConfig = apiConfig;
+        this.mapper = mapper;
     }
 }
