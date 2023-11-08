@@ -20,19 +20,15 @@ public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManagerFactory openApiManagerFactory;
     private final String CuisineTypeName;
 
-    private OpenApiManager openApiManager;
-
-    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String CuisineTypeName, OpenApiManager openApiManager) {
+    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String CuisineTypeName) {
         this.openApiManagerFactory = openApiManagerFactory;
         this.CuisineTypeName = CuisineTypeName;
-        this.openApiManager = openApiManager;
     }
 
+    //시도, 퀴신 타입 추가
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        openApiManager = openApiManagerFactory.createOpenApiManager(page, pageSize, CuisineType.valueOf(CuisineTypeName));
-
-        Genrestrt genrestrt = openApiManager.fetch();
+        Genrestrt genrestrt = openApiManagerFactory.createOpenApiManager(page, pageSize, CuisineType.valueOf(CuisineTypeName)).fetch();
 
         List<RawRestaurant> rawRestaurants = genrestrt.getRow().stream()
                                                  .map(row -> RawRestaurant.builder()
@@ -59,7 +55,7 @@ public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
                                                                  .REFINE_WGS84_LAT(row.getRefineWgs84Lat())
                                                                  .REFINE_WGS84_LOGT(row.getRefineWgs84Logt())
                                                                  .build())
-                                                 .collect(Collectors.toList());
+                                                 .toList();
 
         return new RawRestaurantFetchResult(page, pageSize, genrestrt.getHead().getListTotalCount(), rawRestaurants);
     }
