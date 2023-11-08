@@ -13,7 +13,7 @@ public class OpenApiManagerFactory {
     private final ApiConfig apiConfig;
     private final XmlMapper mapper;
 
-    public OpenApiManager createOpenApiManager(int page, int pageSize, String keyword) {
-        return new OpenApiManager(page, pageSize, keyword, apiConfig, mapper);
+    public OpenApiManager createOpenApiManager() {
+        return new OpenApiManager(apiConfig, mapper);
     }
 }
