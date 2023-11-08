@@ -43,7 +43,6 @@ public class CuisineTypeConverter implements AttributeConverter<Set<CuisineType>
         }
 
         String[] cuisines = dbData.split(" ");
-        Arrays.sort(cuisines);
         Set<CuisineType> cuisineTypeSet = new TreeSet<>();
         for (String cuisine : cuisines) {
             cuisineTypeSet.add(CuisineType.valueOf(cuisine));

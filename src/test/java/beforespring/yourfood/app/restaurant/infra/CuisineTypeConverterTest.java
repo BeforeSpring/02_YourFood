@@ -45,7 +45,7 @@ class CuisineTypeConverterTest {
     }
 
     @Test
-    @DisplayName("변환된 CuisineType은 enum 순으로 정렬되어야 함")
+    @DisplayName("문자열은 CuisineType으로 변환되어야 함")
     void convert_string_to_cuisine_type_sorted_test() {
         //given
         String dbData = "JAPANESE KOREAN JAPANESE CHINESE";
