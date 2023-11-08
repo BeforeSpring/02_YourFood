@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -33,6 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
                             .content(content)
                             .rating(rating)
                             .build();
+        review.isReflectedRating(restaurant.updateNewReviewRating(review));
         reviewRepository.save(review);
     }
 
@@ -43,6 +45,8 @@ public class ReviewServiceImpl implements ReviewService {
             throw new MemberMismatchException();
         }
         review.updateReview(content, rating);
+        Restaurant restaurant = review.getRestaurant();
+        review.isReflectedRating(restaurant.updateModifiedReviewRating(review));
     }
 
     @Override
