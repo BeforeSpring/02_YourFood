@@ -3,13 +3,9 @@ package beforespring.yourfood.batch.rawrestaurant.mapping;
 import beforespring.yourfood.batch.rawrestaurant.mapping.exception.MapperProcessingException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-@Slf4j
-@AllArgsConstructor
 public class OpenApiManager {
     private final String url;
     private final XmlMapper mapper;
@@ -25,5 +21,10 @@ public class OpenApiManager {
             throw new MapperProcessingException(e);
         }
         return data;
+    }
+
+    public OpenApiManager(String url, XmlMapper mapper) {
+        this.url = url;
+        this.mapper = mapper;
     }
 }
