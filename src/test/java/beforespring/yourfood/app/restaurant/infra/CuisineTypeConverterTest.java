@@ -35,7 +35,8 @@ class CuisineTypeConverterTest {
         Set<CuisineType> convertedCuisineType = cuisineTypeConverter.convertToEntityAttribute(toConvert);
 
         //then
-        assertThat(convertedCuisineType).describedAs("중복값을 제거하고 size가 2여야 함").hasSize(2);
+        assertThat(convertedCuisineType)
+            .describedAs("중복값을 제거하고 size가 2여야 함").hasSize(2);
     }
 
     @Test
@@ -45,11 +46,11 @@ class CuisineTypeConverterTest {
         String toConvert = "JAPANESE KOREAN JAPANESE CHINESE";
         Set<CuisineType> expectedCuisineTypeSet = Set.of(CuisineType.KOREAN, CuisineType.CHINESE, CuisineType.JAPANESE);
         //when
-        Set<CuisineType> convertedCuisineType = cuisineTypeConverter.convertToEntityAttribute(toConvert);
+        Set<CuisineType> convertedCuisineTypes = cuisineTypeConverter.convertToEntityAttribute(toConvert);
 
         //then
-        assertThat(convertedCuisineType)
+        assertThat(convertedCuisineTypes)
             .describedAs("변환된 cuisineType set은 KOREAN, CHINESE, JAPANESE type을 가지고 있어야 함")
-            .containsAll(expectedCuisineTypeSet);
+            .containsExactlyInAnyOrderElementsOf(expectedCuisineTypeSet);
     }
 }
