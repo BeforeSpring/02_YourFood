@@ -1,5 +1,6 @@
 package beforespring.yourfood.app.restaurant.domain;
 
+import beforespring.yourfood.app.restaurant.infra.CuisineTypeConverter;
 import beforespring.yourfood.app.utils.Coordinates;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,6 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(
@@ -51,12 +57,18 @@ public class Restaurant {
     @Embedded
     private Coordinates coordinates;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cuisine_type", nullable = false)
-    private CuisineType cuisineType;
+    // todo: refactoring
+    @Column(name = "cuisine_type")
+    @Convert(converter = CuisineTypeConverter.class)
+    private Set<CuisineType> cuisineType = new TreeSet<>();
 
     @Column(nullable = false, precision = 7, scale = 5, columnDefinition = "DECIMAL(7,5)")
     private BigDecimal rating;
+
+    private Integer updatedRatingNum;
+
+    @Column(name = "rating_updated_at")
+    private LocalDateTime ratingUpdatedAt;
 
     @Column(nullable = false)
     private boolean operating;
@@ -71,7 +83,7 @@ public class Restaurant {
         String address,
         AddressCode addressCode,
         Coordinates coordinates,
-        CuisineType cuisineType,
+        Set<CuisineType> cuisineType,
         Boolean operating) {
         this.name = name;
         this.description = description;
@@ -80,12 +92,14 @@ public class Restaurant {
         this.coordinates = coordinates;
         this.cuisineType = cuisineType;
         this.rating = BigDecimal.valueOf(0.0);
+        this.updatedRatingNum = 0;
         this.operating = operating;
         this.deleted = false;
     }
 
     /**
      * 식당 운영 상태 수정
+     *
      * @param operating 운영 중인지 여부
      */
     public void updateOperating(Boolean operating) {
@@ -94,6 +108,7 @@ public class Restaurant {
 
     /**
      * 식당 설명 수정
+     *
      * @param description 식당 설명
      */
     public void updateDescription(String description) {
@@ -109,9 +124,24 @@ public class Restaurant {
 
     /**
      * 식당 평점 수정
-     * @param rating 평점
+     *
+     * @param ratings 평점
      */
-    public void updateRating(BigDecimal rating) {
-        this.rating = rating;
+    public void updateRating(List<Integer> ratings) {
+        int sum = ratings.stream().reduce(0, Integer::sum);
+        BigDecimal avg = this.rating
+                             .multiply(new BigDecimal(this.updatedRatingNum))
+                             .add(new BigDecimal(sum))
+                             .divide(new BigDecimal(ratings.size() + this.updatedRatingNum), RoundingMode.HALF_DOWN);
+        this.updatedRatingNum += ratings.size();
+        this.ratingUpdatedAt = LocalDateTime.now();
+    }
+
+    public void addCuisineType(Set<CuisineType> cuisineTypes) {
+        this.cuisineType.addAll(cuisineTypes);
+    }
+
+    public void addCuisineType(CuisineType cuisineType) {
+        this.cuisineType.add(cuisineType);
     }
 }
