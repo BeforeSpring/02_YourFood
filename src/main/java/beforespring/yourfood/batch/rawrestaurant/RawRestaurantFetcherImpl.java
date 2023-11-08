@@ -18,17 +18,17 @@ import java.util.stream.Collectors;
 
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManagerFactory openApiManagerFactory;
-    private final String CuisineTypeName;
+    private final CuisineType cuisineType;
 
-    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String CuisineTypeName) {
+    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, CuisineType cuisineType) {
         this.openApiManagerFactory = openApiManagerFactory;
-        this.CuisineTypeName = CuisineTypeName;
+        this.cuisineType = cuisineType;
     }
 
     //시도, 퀴신 타입 추가
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        Genrestrt genrestrt = openApiManagerFactory.createOpenApiManager(page, pageSize, CuisineType.valueOf(CuisineTypeName)).fetch();
+        Genrestrt genrestrt = openApiManagerFactory.createOpenApiManager(page, pageSize, cuisineType).fetch();
 
         List<RawRestaurant> rawRestaurants = genrestrt.getRow().stream()
                                                  .map(row -> RawRestaurant.builder()
