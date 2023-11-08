@@ -11,6 +11,7 @@ import beforespring.yourfood.app.review.domain.ReviewRepository;
 import beforespring.yourfood.app.utils.Coordinates;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 
 import static beforespring.yourfood.app.utils.RestaurantComparators.byDistance;
@@ -33,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getRestaurantsByRating(boolean descendingOrder, Coordinates coordinates, int rangeInMeter) {
-        List<Restaurant> restaurantsInLocation = restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter);
+        List<Restaurant> restaurantsInLocation = new ArrayList<>(restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter));
         // 평점순 정렬
         restaurantsInLocation.sort(byRatingAverage(descendingOrder));
         return restaurantsInLocation;
@@ -41,7 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getRestaurantsByDistance(boolean descendingOrder, Coordinates coordinates, int rangeInMeter) {
-        List<Restaurant> restaurantsInLocation = restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter);
+        List<Restaurant> restaurantsInLocation = new ArrayList<>(restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter));
         // 거리순 정렬
         restaurantsInLocation.sort(byDistance(descendingOrder, coordinates));
         return restaurantsInLocation;

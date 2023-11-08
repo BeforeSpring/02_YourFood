@@ -1,31 +1,25 @@
 package beforespring.yourfood.web.api.restaurant;
 
+import beforespring.yourfood.app.restaurant.domain.OrderBy;
+import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.service.RestaurantServiceImpl;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
+import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.web.api.common.GenericResponse;
 
 import beforespring.yourfood.web.api.common.StatusCode;
-import beforespring.yourfood.web.api.restaurant.response.RegionListResponse;
 import beforespring.yourfood.web.api.restaurant.response.RestaurantListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantServiceImpl restaurantService;
-
-    /**
-     * 모든 시군구 목록 조회
-     *
-     * @return
-     */
-    @GetMapping("/regions")
-    public GenericResponse<RegionListResponse> getRegions() {
-        return null;
-    }
-
     /**
      * 맛집 상세 정보 조회
      *
@@ -44,36 +38,37 @@ public class RestaurantController {
     }
 
     /**
-     * 지역별 맛집 목록 조회
+     * 맛집 목록 조회
      *
-     * @param region  조회할 지역명
-     * @param range   조회 반경 거리
-     * @param orderBy 정렬 기준
-     * @return
+     * @param rangeInMeter    반경
+     * @param lat             위도
+     * @param lon             경도
+     * @param orderBy         정렬 기준 (평점 또는 거리)
+     * @param descendingOrder 내림차순 정렬 여부
+     * @return 맛집 목록
      */
-    @GetMapping
-    public GenericResponse<RestaurantListResponse> getRestaurantsByRegion(@RequestParam String region,
-                                                                          @RequestParam int range,
-                                                                          @RequestParam(required = false) String orderBy) {
-        return null;
-    }
-
-    /**
-     * 내 주변 맛집 목록 조회
-     *
-     * @param range   조회 반경 거리
-     * @param lat     위도
-     * @param lon     경도
-     * @param orderBy 정렬 기준
-     * @return
-     */
-    @GetMapping("/nearby")
-    public GenericResponse<RestaurantListResponse> getNearbyRestaurants(@RequestParam int range,
+    @GetMapping("")
+    public GenericResponse<List<RestaurantListResponse>> getRestaurants(@RequestParam Integer rangeInMeter,
                                                                         @RequestParam String lat,
                                                                         @RequestParam String lon,
-                                                                        @RequestParam(required = false) String orderBy) {
+                                                                        @RequestParam(required = false) OrderBy orderBy,
+                                                                        @RequestParam(required = false) boolean descendingOrder)
+    {
+        BigDecimal latDecimal = new BigDecimal(String.valueOf(lat));
+        BigDecimal lonDecimal = new BigDecimal(String.valueOf(lon));
+        Coordinates coordinates = new Coordinates(latDecimal, lonDecimal);
 
-        return null;
+        List<Restaurant> restaurants;
+
+        if (orderBy == OrderBy.RATING) {
+            restaurants = restaurantService.getRestaurantsByRating(descendingOrder, coordinates, rangeInMeter);
+        } else {
+            restaurants = restaurantService.getRestaurantsByDistance(descendingOrder, coordinates, rangeInMeter);
+        }
+        List<RestaurantListResponse> restaurantListResponses = RestaurantListResponse.mapToRestaurantListResponse(restaurants);
+        return GenericResponse.<List<RestaurantListResponse>>builder()
+            .statusCode(StatusCode.OK)
+            .message("Success")
+            .data(restaurantListResponses).build();
     }
-
 }
