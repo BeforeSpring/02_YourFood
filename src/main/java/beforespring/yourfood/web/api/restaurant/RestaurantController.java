@@ -5,28 +5,50 @@ import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.service.RestaurantServiceImpl;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
+import beforespring.yourfood.app.utils.SggLatLonService;
 import beforespring.yourfood.web.api.common.GenericResponse;
 
 import beforespring.yourfood.web.api.common.StatusCode;
+import beforespring.yourfood.web.api.restaurant.response.RegionListResponse;
 import beforespring.yourfood.web.api.restaurant.response.RestaurantListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantServiceImpl restaurantService;
+    private final SggLatLonService sggLatLonService;
+
+    /**
+     * 모든 시군구 목록 조회
+     *
+     * @return 시군구 목록
+     */
+    @GetMapping("/regions")
+    public GenericResponse<List<RegionListResponse>> getRegions() {
+        List<RegionListResponse> regionResponses = sggLatLonService.getAllSggLatLon().stream()
+            .map(sggLatLon -> new RegionListResponse(sggLatLon.getSiDo(), sggLatLon.getSiGunGu()))
+            .collect(Collectors.toList());
+
+        return GenericResponse.<List<RegionListResponse>>builder()
+            .statusCode(StatusCode.OK)
+            .message("Success")
+            .data(regionResponses)
+            .build();
+    }
+
     /**
      * 맛집 상세 정보 조회
      *
      * @param restaurantId 맛집 id
      * @return 레스토랑의 상세 정보
      */
-
     @GetMapping("/{restaurantId}")
     public GenericResponse<RestaurantWithReviewDto> getRestaurantDetail(@PathVariable Long restaurantId) {
         RestaurantWithReviewDto restaurantDto = restaurantService.getRestaurantDetail(restaurantId);
