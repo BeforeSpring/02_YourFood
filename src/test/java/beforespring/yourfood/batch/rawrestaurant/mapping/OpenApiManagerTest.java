@@ -1,5 +1,6 @@
 package beforespring.yourfood.batch.rawrestaurant.mapping;
 
+import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import beforespring.yourfood.batch.rawrestaurant.mapping.exception.MapperProcessingException;
 import beforespring.yourfood.config.ApiConfig;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -26,8 +27,8 @@ public class OpenApiManagerTest {
         XmlMapper xmlMapper = new XmlMapper();
 
         // OpenApiManagerFactory를 사용하여 OpenApiManager를 생성합니다.
-        OpenApiManagerFactory openApiManagerFactory = new OpenApiManagerFactory(apiConfig.getCuisineTypeNames(), xmlMapper, apiConfig.getDeveloperApiKey());
-        openApiManager = openApiManagerFactory.createOpenApiManager(1, 10, "lunch");
+        OpenApiManagerFactory openApiManagerFactory = new OpenApiManagerFactory(apiConfig.getCuisineTypeNames(), restTemplate, xmlMapper, apiConfig.getDeveloperApiKey());
+        openApiManager = openApiManagerFactory.createOpenApiManager(1, 10, CuisineType.KOREAN);
     }
 
     /**
