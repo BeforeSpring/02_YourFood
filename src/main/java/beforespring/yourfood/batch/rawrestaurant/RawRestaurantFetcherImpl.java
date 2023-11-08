@@ -7,28 +7,27 @@ import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 해당 fetcher는 다른 공공데이터 url로 사용할 수 없기 떄문에 class 명을 경기도 관련으로 바꿔야됨
  * <p>
  * Refactoring 필요함
  */
-
-
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
-    private final OpenApiManagerFactory openApiManagerFactory;
     private final CuisineType cuisineType;
 
+    private final OpenApiManager openApiManager;
+
+
     public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, CuisineType cuisineType) {
-        this.openApiManagerFactory = openApiManagerFactory;
         this.cuisineType = cuisineType;
+        this.openApiManager = openApiManagerFactory.createOpenApiManager(cuisineType);
     }
 
     //시도, 퀴신 타입 추가
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        Genrestrt genrestrt = openApiManagerFactory.createOpenApiManager(page, pageSize, cuisineType).fetch();
+        Genrestrt genrestrt = openApiManager.fetch();
 
         List<RawRestaurant> rawRestaurants = genrestrt.getRow().stream()
                                                  .map(row -> RawRestaurant.builder()

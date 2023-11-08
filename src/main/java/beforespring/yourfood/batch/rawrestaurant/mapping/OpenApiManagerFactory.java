@@ -15,15 +15,17 @@ public class OpenApiManagerFactory {
     private final XmlMapper mapper;
     private final String devKey;
 
-    public OpenApiManager createOpenApiManager(int page, int pageSize, CuisineType cuisineType) {
-        String baseUrl = "https://openapi.gg.go.kr";
-        String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                         .path(cuisineTypeNames.get(cuisineType))
-                         .queryParam("KEY", devKey)
-                         .queryParam("pIndex", page)
-                         .queryParam("pSize", pageSize)
-                         .toUriString();
+    public OpenApiManager createOpenApiManager(CuisineType cuisineType) {
+        String url = createUrl(cuisineType);
         return new OpenApiManager(url, mapper, restTemplate);
+    }
+
+    public String createUrl(CuisineType cuisineType) {
+        String baseUrl = "https://openapi.gg.go.kr";
+        return UriComponentsBuilder.fromHttpUrl(baseUrl)
+                   .path(cuisineTypeNames.get(cuisineType))
+                   .queryParam("KEY", devKey)
+                   .toUriString();
     }
 
     public OpenApiManagerFactory(Map<CuisineType, String> cuisineTypeNames, RestTemplate restTemplate, XmlMapper mapper, String devKey) {
