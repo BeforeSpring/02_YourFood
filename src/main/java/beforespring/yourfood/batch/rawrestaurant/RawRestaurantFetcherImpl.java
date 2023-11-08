@@ -17,13 +17,13 @@ import java.util.List;
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManagerFactory openApiManagerFactory;
     private final ApiConfig apiConfig;
-
+    private final String keyword;
+    // 이후 경기도 관련으로 이름 바꿔야됨
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        String keyword1 = apiConfig.getApiKeyword("lunch");
-        OpenApiManager manager = openApiManagerFactory.createOpenApiManager();
+        OpenApiManager manager = openApiManagerFactory.createOpenApiManager(page, pageSize, keyword);
 
-        Genrestrt genrestrt = manager.fetch(page, pageSize, keyword1);
+        Genrestrt genrestrt = manager.fetch();
 
         List<RawRestaurant> rawRestaurants = new ArrayList<>();
 
