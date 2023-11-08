@@ -17,16 +17,16 @@ import java.util.List;
 
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
     private final OpenApiManagerFactory openApiManagerFactory;
-    private final String keyword;
+    private final String CuisineTypeName;
 
-    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String keyword) {
+    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, String CuisineTypeName) {
         this.openApiManagerFactory = openApiManagerFactory;
-        this.keyword = keyword;
+        this.CuisineTypeName = CuisineTypeName;
     }
 
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        OpenApiManager manager = openApiManagerFactory.createOpenApiManager(page, pageSize, keyword);
+        OpenApiManager manager = openApiManagerFactory.createOpenApiManager(page, pageSize, CuisineTypeName);
 
         Genrestrt genrestrt = manager.fetch();
 
