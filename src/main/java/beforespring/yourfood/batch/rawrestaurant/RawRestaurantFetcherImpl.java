@@ -2,8 +2,10 @@ package beforespring.yourfood.batch.rawrestaurant;
 
 import beforespring.yourfood.batch.rawrestaurant.mapping.Genrestrt;
 import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManager;
+import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.mapping.Row;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
+import beforespring.yourfood.config.ApiConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +15,15 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
-    private final OpenApiManager manager;
+    private final OpenApiManagerFactory openApiManagerFactory;
+    private final ApiConfig apiConfig;
 
     @Override
     public RawRestaurantFetchResult find(int page, int pageSize) {
-        Genrestrt genrestrt = manager.fetch(page, pageSize);
+        String keyword1 = apiConfig.getApiKeyword("lunch");
+        OpenApiManager manager = openApiManagerFactory.createOpenApiManager();
+
+        Genrestrt genrestrt = manager.fetch(page, pageSize, keyword1);
 
         List<RawRestaurant> rawRestaurants = new ArrayList<>();
 
