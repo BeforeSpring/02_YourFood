@@ -42,9 +42,4 @@ public class OpenApiManager {
                    .queryParam("pSize", pageSize)
                    .toUriString();
     }
-
-    public OpenApiManager(int page, int pageSize, String keyword, ApiConfig apiConfig, XmlMapper mapper) {
-        this.apiConfig = apiConfig;
-        this.mapper = mapper;
-    }
 }
