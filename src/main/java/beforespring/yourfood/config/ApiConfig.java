@@ -15,27 +15,23 @@ public class ApiConfig {
     @Value("${developer.api.key}")
     private String developerApiKey;
 
-    private final Map<String, String> keywords;
+    private final Map<String, String> CuisineTypeNames;
 
     @Bean
     public XmlMapper xmlMapper() {
         return new XmlMapper();
     }
 
-    public String getApiKeyword(String keyIdentifier) {
-        return keywords.get(keyIdentifier);
-    }
-
     public ApiConfig() {
-        keywords = new HashMap<>();
-        keywords.put("lunch", "/Genrestrtlunch");
-        keywords.put("cafe", "/Genrestrtcate");
-        keywords.put("fugu", "/Genrestrtfugu");
-        keywords.put("sashimi", "/Genrestrtsash");
-        keywords.put("buffet", "/Genrestrtbuff");
-        keywords.put("fastfood", "/Genrestrtfastfood");
-        keywords.put("china", "/Genrestrtchifood");
-        keywords.put("japan", "/Genrestrtjpnfood");
-        keywords.put("soup", "/Genrestrtsoup");
+        CuisineTypeNames = new HashMap<>();
+        CuisineTypeNames.put("lunch", "/Genrestrtlunch");
+        CuisineTypeNames.put("cafe", "/Genrestrtcate");
+        CuisineTypeNames.put("fugu", "/Genrestrtfugu");
+        CuisineTypeNames.put("sashimi", "/Genrestrtsash");
+        CuisineTypeNames.put("buffet", "/Genrestrtbuff");
+        CuisineTypeNames.put("fastfood", "/Genrestrtfastfood");
+        CuisineTypeNames.put("china", "/Genrestrtchifood");
+        CuisineTypeNames.put("japan", "/Genrestrtjpnfood");
+        CuisineTypeNames.put("soup", "/Genrestrtsoup");
     }
 }
