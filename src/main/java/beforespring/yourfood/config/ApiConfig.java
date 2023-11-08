@@ -1,5 +1,6 @@
 package beforespring.yourfood.config;
 
+import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,23 +16,23 @@ public class ApiConfig {
     @Value("${developer.api.key}")
     private String developerApiKey;
 
-    private final Map<String, String> CuisineTypeNames;
+    @Bean
+    public Map<CuisineType, String> cuisineTypeMap() {
+        Map<CuisineType, String> cuisineTypeNames = new HashMap<>();
+        cuisineTypeNames.put(CuisineType.KOREAN, "/Genrestrtlunch");
+        cuisineTypeNames.put(CuisineType.CAFE, "/Genrestrtcate");
+        cuisineTypeNames.put(CuisineType.FUGU, "/Genrestrtfugu");
+        cuisineTypeNames.put(CuisineType.SASHIMI, "/Genrestrtsash");
+        cuisineTypeNames.put(CuisineType.BUFFET, "/Genrestrtbuff");
+        cuisineTypeNames.put(CuisineType.FASTFOOD, "/Genrestrtfastfood");
+        cuisineTypeNames.put(CuisineType.CHINESE, "/Genrestrtchifood");
+        cuisineTypeNames.put(CuisineType.JAPANESE, "/Genrestrtjpnfood");
+        cuisineTypeNames.put(CuisineType.SOUP, "/Genrestrtsoup");
+        return cuisineTypeNames;
+    }
 
     @Bean
     public XmlMapper xmlMapper() {
         return new XmlMapper();
-    }
-
-    public ApiConfig() {
-        CuisineTypeNames = new HashMap<>();
-        CuisineTypeNames.put("lunch", "/Genrestrtlunch");
-        CuisineTypeNames.put("cafe", "/Genrestrtcate");
-        CuisineTypeNames.put("fugu", "/Genrestrtfugu");
-        CuisineTypeNames.put("sashimi", "/Genrestrtsash");
-        CuisineTypeNames.put("buffet", "/Genrestrtbuff");
-        CuisineTypeNames.put("fastfood", "/Genrestrtfastfood");
-        CuisineTypeNames.put("china", "/Genrestrtchifood");
-        CuisineTypeNames.put("japan", "/Genrestrtjpnfood");
-        CuisineTypeNames.put("soup", "/Genrestrtsoup");
     }
 }
