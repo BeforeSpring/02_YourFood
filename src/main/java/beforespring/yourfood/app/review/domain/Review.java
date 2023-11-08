@@ -34,6 +34,9 @@ public class Review {
     private String content;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
+    private Integer beforeRating;
+
+    @Column(columnDefinition = "TINYINT", nullable = false)
     private Integer rating;
 
     @CreatedDate
@@ -44,39 +47,42 @@ public class Review {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "rating_reflected_at")
-    private LocalDateTime ratingReflectedAt;
+    @Column(name = "reflected_rating")
+    private Boolean reflectedRating;
 
     @Builder
     public Review(
         Member member,
         Restaurant restaurant,
         String content,
-        Integer rating){
+        Integer rating) {
         this.member = member;
         this.restaurant = restaurant;
         this.content = content;
         this.rating = rating;
         this.createdAt = LocalDateTime.now();
+        this.beforeRating = 0;
     }
 
     /**
-     * 리뷰 업데이트
+     * 리뷰 업데이트.
      *
      * @param content 수정할 내용
      * @param rating  수정할 평점
      */
     public void updateReview(String content, Integer rating) {
         this.content = content;
+        this.beforeRating = this.rating;
         this.rating = rating;
         this.updatedAt = LocalDateTime.now();
     }
 
     /**
-     * 리뷰 평점이 식당 평균 평점에 반영된 시각을 저장
-     * @param time 반영된 시각
+     * 리뷰 평점이 식당 평균 평점에 반영되었는지 여부 업데이트.
+     *
+     * @param isReflected 반영 여부
      */
-    public void updateRatingReflectedAt(LocalDateTime time) {
-        this.ratingReflectedAt = time;
+    public void isReflectedRating(Boolean isReflected) {
+        this.reflectedRating = isReflected;
     }
 }
