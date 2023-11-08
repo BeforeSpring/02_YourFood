@@ -10,8 +10,8 @@ public class OpenApiManager {
     private final String url;
     private final XmlMapper mapper;
 
+    private final RestTemplate restTemplate;
     public Genrestrt fetch() {
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         Genrestrt data;
 
@@ -23,8 +23,9 @@ public class OpenApiManager {
         return data;
     }
 
-    public OpenApiManager(String url, XmlMapper mapper) {
+    public OpenApiManager(String url, XmlMapper mapper, RestTemplate restTemplate) {
         this.url = url;
         this.mapper = mapper;
+        this.restTemplate = restTemplate;
     }
 }
