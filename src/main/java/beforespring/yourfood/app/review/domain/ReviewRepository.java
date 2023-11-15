@@ -16,9 +16,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId")
     Page<Review> findReviewsByRestaurantIdPaged(@Param("restaurantId") Long restaurantId, Pageable pageable);
 
-    @Query("SELECT r FROM Review r WHERE r.updatedAt < :restaurantRatingUpdatedAt AND r.reflectedRating = false")
-    List<Review> findUnreflectedRatingModifiedReviews(@Param("restaurantRatingUpdatedAt") LocalDateTime restaurantRatingUpdatedAt);
+    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId AND r.updatedAt < :restaurantRatingUpdatedAt AND r.reflectedRating = false")
+    List<Review> findUnreflectedRatingModifiedReviews(@Param("restaurantId") Long restaurantId, @Param("restaurantRatingUpdatedAt") LocalDateTime restaurantRatingUpdatedAt);
 
-    @Query("SELECT r FROM Review r WHERE r.updatedAt IS NULL AND r.reflectedRating = false")
-    List<Review> findUnreflectedRatingNewReviews();
+    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId AND r.updatedAt IS NULL AND r.reflectedRating = false")
+    List<Review> findUnreflectedRatingNewReviews(@Param("restaurantId") Long restaurantId);
 }

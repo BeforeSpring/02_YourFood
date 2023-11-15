@@ -1,5 +1,6 @@
 package beforespring.yourfood.app.review.domain;
 
+import beforespring.Fixture;
 import beforespring.yourfood.app.member.domain.Member;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import org.assertj.core.api.Assertions;
@@ -31,11 +32,13 @@ class ReviewRepositoryTest {
     @DisplayName("수정된 리뷰 중 레스토랑에 반영되지 않은 리뷰를 찾음")
     void find_unreflected_rating_modified_reviews() {
         //given
-        initNewReviewDummy(5);
-        initModifiedReviewDummy(10);
+        Restaurant restaurant = Fixture.aRestaurant().build();
+        em.persist(restaurant);
+        initNewReviewDummy(5, restaurant);
+        initModifiedReviewDummy(10, restaurant);
 
         //when
-        List<Review> findReviews = reviewRepository.findUnreflectedRatingModifiedReviews(LocalDateTime.now());
+        List<Review> findReviews = reviewRepository.findUnreflectedRatingModifiedReviews(restaurant.getId(), LocalDateTime.now());
 
         //then
         Assertions.assertThat(findReviews)
@@ -48,11 +51,13 @@ class ReviewRepositoryTest {
     @DisplayName("반영되지 않은 새로운 리뷰를 찾음")
     void find_unreflected_rating_new_reviews() {
         //given
-        initNewReviewDummy(5);
-        initModifiedReviewDummy(10);
+        Restaurant restaurant = Fixture.aRestaurant().build();
+        em.persist(restaurant);
+        initNewReviewDummy(5, restaurant);
+        initModifiedReviewDummy(10, restaurant);
 
         //when
-        List<Review> findReviews = reviewRepository.findUnreflectedRatingNewReviews();
+        List<Review> findReviews = reviewRepository.findUnreflectedRatingNewReviews(restaurant.getId());
 
         //then
         Assertions.assertThat(findReviews)
@@ -60,11 +65,9 @@ class ReviewRepositoryTest {
             .hasSize(5);
     }
 
-    public void initModifiedReviewDummy(int howManySet) {
+    public void initModifiedReviewDummy(int howManySet, Restaurant restaurant) {
         Member member = aMember().build();
-        Restaurant restaurant = aRestaurant().build();
         em.persist(member);
-        em.persist(restaurant);
         List<Review> modifiedReviews = Stream.generate(() -> aReview()
                                                                  .member(member)
                                                                  .restaurant(restaurant)
@@ -80,11 +83,9 @@ class ReviewRepositoryTest {
         em.clear();
     }
 
-    public void initNewReviewDummy(int howManySet) {
+    public void initNewReviewDummy(int howManySet, Restaurant restaurant) {
         Member member = aMember().build();
-        Restaurant restaurant = aRestaurant().build();
         em.persist(member);
-        em.persist(restaurant);
         List<Review> newReviews = Stream.generate(() -> aReview()
                                                             .member(member)
                                                             .restaurant(restaurant)
