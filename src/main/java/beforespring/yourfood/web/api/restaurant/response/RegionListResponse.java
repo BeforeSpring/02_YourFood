@@ -1,4 +1,11 @@
 package beforespring.yourfood.web.api.restaurant.response;
 
-public record RegionListResponse(String siDo, String siGunGu) {
+import lombok.Builder;
+
+import java.util.List;
+
+public record RegionListResponse(List<RegionDto> regionDto) {
+    @Builder
+    public RegionListResponse {
+    }
 }

@@ -1,7 +1,6 @@
 package beforespring.yourfood.web.api.restaurant;
 
-import beforespring.yourfood.app.restaurant.domain.OrderBy;
-import beforespring.yourfood.app.restaurant.domain.Restaurant;
+import beforespring.yourfood.app.utils.OrderBy;
 import beforespring.yourfood.app.restaurant.service.RestaurantServiceImpl;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
@@ -9,14 +8,15 @@ import beforespring.yourfood.app.utils.SggLatLonService;
 import beforespring.yourfood.web.api.common.GenericResponse;
 
 import beforespring.yourfood.web.api.common.StatusCode;
+import beforespring.yourfood.web.api.restaurant.response.RegionDto;
 import beforespring.yourfood.web.api.restaurant.response.RegionListResponse;
+import beforespring.yourfood.web.api.restaurant.response.RestaurantDto;
 import beforespring.yourfood.web.api.restaurant.response.RestaurantListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/restaurants")
@@ -31,15 +31,13 @@ public class RestaurantController {
      * @return 시군구 목록
      */
     @GetMapping("/regions")
-    public GenericResponse<List<RegionListResponse>> getRegions() {
-        List<RegionListResponse> regionResponses = sggLatLonService.getAllSggLatLon().stream()
-            .map(sggLatLon -> new RegionListResponse(sggLatLon.getSiDo(), sggLatLon.getSiGunGu()))
-            .collect(Collectors.toList());
-
-        return GenericResponse.<List<RegionListResponse>>builder()
+    public GenericResponse<RegionListResponse> getRegions() {
+        List<RegionDto> allSggLatLon = sggLatLonService.getAllSggLatLon();
+        RegionListResponse regionListResponse = RegionListResponse.builder().regionDto(allSggLatLon).build();
+        return GenericResponse.<RegionListResponse>builder()
             .statusCode(StatusCode.OK)
             .message("Success")
-            .data(regionResponses)
+            .data(regionListResponse)
             .build();
     }
 
@@ -70,27 +68,24 @@ public class RestaurantController {
      * @return 맛집 목록
      */
     @GetMapping("")
-    public GenericResponse<List<RestaurantListResponse>> getRestaurants(@RequestParam Integer rangeInMeter,
-                                                                        @RequestParam String lat,
-                                                                        @RequestParam String lon,
-                                                                        @RequestParam(required = false) OrderBy orderBy,
-                                                                        @RequestParam(required = false) boolean descendingOrder)
-    {
+    public GenericResponse<RestaurantListResponse> getRestaurants(@RequestParam Integer rangeInMeter,
+                                                                  @RequestParam String lat,
+                                                                  @RequestParam String lon,
+                                                                  @RequestParam(required = false) OrderBy orderBy,
+                                                                  @RequestParam(required = false) boolean descendingOrder) {
         BigDecimal latDecimal = new BigDecimal(String.valueOf(lat));
         BigDecimal lonDecimal = new BigDecimal(String.valueOf(lon));
         Coordinates coordinates = new Coordinates(latDecimal, lonDecimal);
 
-        List<Restaurant> restaurants;
+        List<RestaurantDto> restaurantDtos = restaurantService.getRestaurants(orderBy, descendingOrder, coordinates, rangeInMeter);
 
-        if (orderBy == OrderBy.RATING) {
-            restaurants = restaurantService.getRestaurantsByRating(descendingOrder, coordinates, rangeInMeter);
-        } else {
-            restaurants = restaurantService.getRestaurantsByDistance(descendingOrder, coordinates, rangeInMeter);
-        }
-        List<RestaurantListResponse> restaurantListResponses = RestaurantListResponse.mapToRestaurantListResponse(restaurants);
-        return GenericResponse.<List<RestaurantListResponse>>builder()
+        RestaurantListResponse restaurantListResponse = RestaurantListResponse.builder().restaurantDtos(restaurantDtos).build();
+
+        return GenericResponse.<RestaurantListResponse>builder()
             .statusCode(StatusCode.OK)
             .message("Success")
-            .data(restaurantListResponses).build();
+            .data(restaurantListResponse)
+            .build();
     }
+
 }
