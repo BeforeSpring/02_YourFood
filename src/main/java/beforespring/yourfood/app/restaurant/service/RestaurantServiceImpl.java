@@ -57,6 +57,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
         return restaurant.updateModifiedReviewRating(review);
+    }
       
     public List<Restaurant> getRestaurantsByDistance(boolean descendingOrder, Coordinates coordinates, int rangeInMeter) {
         List<Restaurant> restaurantsInLocation = restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter);
