@@ -1,21 +1,20 @@
 package beforespring.yourfood.app.review.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+
+
+import beforespring.yourfood.app.utils.OrderBy;
 
 import java.util.List;
 
-public interface ReviewQueryRepository extends JpaRepository<Review, Long> {
-    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId ORDER BY r.rating ASC")
-    List<Review> findReviewsByRestaurantIdOrderByRatingAsc(@Param("restaurantId") Long restaurantId);
-
-    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId ORDER BY r.rating DESC")
-    List<Review> findReviewsByRestaurantIdOrderByRatingDesc(@Param("restaurantId") Long restaurantId);
-
-    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId ORDER BY r.createdAt ASC")
-    List<Review> findReviewsByRestaurantIdOrderByCreatedAtAsc(@Param("restaurantId") Long restaurantId);
-
-    @Query("SELECT r FROM Review r WHERE r.restaurant.id = :restaurantId ORDER BY r.createdAt DESC")
-    List<Review> findReviewsByRestaurantIdOrderByCreatedAtDesc(@Param("restaurantId") Long restaurantId);
+public interface ReviewQueryRepository {
+    /**
+     * 정렬 기준에 따른 레스토랑 ID에 대한 리뷰 목록
+     *
+     * @param desc         내림차순 여부
+     * @param orderBy      정렬 기준 (RATING, TIME)
+     * @param restaurantId 리뷰를 가져올 레스토랑의 ID
+     * @return 정렬된 리뷰 목록
+     */
+    List<Review> findReviewsByRestaurantIdOrderBy(boolean desc, OrderBy orderBy, Long restaurantId);
 }
