@@ -10,7 +10,10 @@ import beforespring.yourfood.app.restaurant.service.dto.ReviewDto;
 import beforespring.yourfood.app.review.domain.Review;
 import beforespring.yourfood.app.review.domain.ReviewRepository;
 import beforespring.yourfood.app.review.exception.MemberMismatchException;
+import beforespring.yourfood.app.review.service.event.UpdateReviewEvent;
+import beforespring.yourfood.app.review.service.event.CreateReviewEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final RestaurantRepository restaurantRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public void saveReview(Long restaurantId, Long memberId, String content, Integer rating) {
@@ -34,7 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
                             .content(content)
                             .rating(rating)
                             .build();
-        restaurant.updateNewReviewRating(review);
+        applicationEventPublisher.publishEvent(new CreateReviewEvent(restaurant ,rating));
         reviewRepository.save(review);
     }
 
@@ -46,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
         review.updateReview(content, rating);
         Restaurant restaurant = review.getRestaurant();
-        restaurant.updateModifiedReviewRating(review);
+        applicationEventPublisher.publishEvent(new UpdateReviewEvent(restaurant ,review.getRating(), review.getBeforeRating()));
     }
 
     @Override
