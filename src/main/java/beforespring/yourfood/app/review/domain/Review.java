@@ -47,9 +47,6 @@ public class Review {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "reflected_rating")
-    private Boolean reflectedRating;
-
     @Builder
     public Review(
         Member member,
@@ -75,14 +72,5 @@ public class Review {
         this.beforeRating = this.rating;
         this.rating = rating;
         this.updatedAt = LocalDateTime.now();
-    }
-
-    /**
-     * 리뷰 평점이 식당 평균 평점에 반영되었는지 여부 업데이트.
-     *
-     * @param isReflected 반영 여부
-     */
-    public void isReflectedRating(Boolean isReflected) {
-        this.reflectedRating = isReflected;
     }
 }
