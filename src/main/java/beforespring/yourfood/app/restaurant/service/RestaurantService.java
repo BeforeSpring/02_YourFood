@@ -1,5 +1,6 @@
 package beforespring.yourfood.app.restaurant.service;
 
+import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.utils.OrderBy;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
