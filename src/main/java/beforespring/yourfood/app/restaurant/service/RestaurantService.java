@@ -1,8 +1,9 @@
 package beforespring.yourfood.app.restaurant.service;
 
-import beforespring.yourfood.app.restaurant.domain.Restaurant;
+import beforespring.yourfood.app.utils.OrderBy;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
+import beforespring.yourfood.web.api.restaurant.response.RestaurantDto;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface RestaurantService {
      * @param restaurantId 업데이트 할 레스토랑 id
      * @param reviewId     수정된 리뷰 id
      */
-    public void updateNewReviewRating(Long restaurantId, Long reviewId);
+    void updateNewReviewRating(Long restaurantId, Long reviewId);
 
     /**
      * 수정된 리뷰의 평점을 식당 평점에 업데이트함
@@ -28,7 +29,7 @@ public interface RestaurantService {
      * @param restaurantId 업데이트 할 레스토랑 id
      * @param reviewId     수정된 리뷰 id
      */
-    public void updateModifiedReviewRating(Long restaurantId, Long reviewId);
+    void updateModifiedReviewRating(Long restaurantId, Long reviewId);
   
     /**
      * 평점순으로 레스토랑 목록 조회
@@ -47,4 +48,6 @@ public interface RestaurantService {
      * @return 거리순으로 정렬된 레스토랑 목록
      */
     List<Restaurant> getRestaurantsByDistance(boolean descendingOrder, Coordinates coordinates, int rangeInMeter);
+  
+    List<RestaurantDto> getRestaurants(OrderBy orderBy, boolean descendingOrder, Coordinates coordinates, int rangeInMeter);
 }
