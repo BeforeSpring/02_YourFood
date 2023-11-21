@@ -46,17 +46,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public boolean updateNewReviewRating(Long restaurantId, Long reviewId) {
+    public void updateNewReviewRating(Long restaurantId, Long reviewId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        return restaurant.updateNewReviewRating(review);
+        restaurant.updateNewReviewRating(review);
     }
 
     @Override
-    public boolean updateReviewRating(Long restaurantId, Long reviewId) {
+    public void updateModifiedReviewRating(Long restaurantId, Long reviewId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        return restaurant.updateModifiedReviewRating(review);
+        restaurant.updateModifiedReviewRating(review);
     }
       
     public List<Restaurant> getRestaurantsByDistance(boolean descendingOrder, Coordinates coordinates, int rangeInMeter) {

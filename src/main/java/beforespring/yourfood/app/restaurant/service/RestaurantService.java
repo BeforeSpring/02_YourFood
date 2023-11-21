@@ -20,7 +20,7 @@ public interface RestaurantService {
      * @param restaurantId 업데이트 할 레스토랑 id
      * @param reviewId     수정된 리뷰 id
      */
-    public boolean updateNewReviewRating(Long restaurantId, Long reviewId);
+    public void updateNewReviewRating(Long restaurantId, Long reviewId);
 
     /**
      * 수정된 리뷰의 평점을 식당 평점에 업데이트함
@@ -28,7 +28,7 @@ public interface RestaurantService {
      * @param restaurantId 업데이트 할 레스토랑 id
      * @param reviewId     수정된 리뷰 id
      */
-    public boolean updateReviewRating(Long restaurantId, Long reviewId);
+    public void updateModifiedReviewRating(Long restaurantId, Long reviewId);
   
     /**
      * 평점순으로 레스토랑 목록 조회

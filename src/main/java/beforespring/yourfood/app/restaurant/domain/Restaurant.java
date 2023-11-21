@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.event.EventListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -169,16 +170,15 @@ public class Restaurant {
      *
      * @param review 수정된 리뷰
      */
-    public boolean updateModifiedReviewRating(Review review) {
+    public void updateModifiedReviewRating(Review review) {
         if (this.updatedRatingNum >= 100)
-            return false;
+            return;
         this.rating = this.rating
                           .multiply(new BigDecimal(this.updatedRatingNum))
                           .add(new BigDecimal(review.getRating() - review.getBeforeRating()))
                           .divide(new BigDecimal(this.updatedRatingNum), RoundingMode.HALF_UP)
                           .setScale(5, RoundingMode.HALF_UP);
         this.ratingUpdatedAt = LocalDateTime.now();
-        return true;
     }
 
     /**
@@ -187,16 +187,15 @@ public class Restaurant {
      *
      * @param review 새로운 리뷰
      */
-    public boolean updateNewReviewRating(Review review) {
+    public void updateNewReviewRating(Review review) {
         if (this.updatedRatingNum >= 100)
-            return false;
+            return;
         this.rating = this.rating
                           .multiply(BigDecimal.valueOf(this.updatedRatingNum).setScale(5))
                           .add(BigDecimal.valueOf(review.getRating()).setScale(5))
                           .divide(BigDecimal.valueOf(++this.updatedRatingNum).setScale(5), RoundingMode.HALF_UP)
                           .setScale(5, RoundingMode.HALF_UP);
         this.ratingUpdatedAt = LocalDateTime.now();
-        return true;
     }
 
     public void addCuisineType(Set<CuisineType> cuisineTypes) {

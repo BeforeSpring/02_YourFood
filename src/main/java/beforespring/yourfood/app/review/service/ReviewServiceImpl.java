@@ -34,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
                             .content(content)
                             .rating(rating)
                             .build();
-        review.isReflectedRating(restaurant.updateNewReviewRating(review));
+        restaurant.updateNewReviewRating(review);
         reviewRepository.save(review);
     }
 
@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
         review.updateReview(content, rating);
         Restaurant restaurant = review.getRestaurant();
-        review.isReflectedRating(restaurant.updateModifiedReviewRating(review));
+        restaurant.updateModifiedReviewRating(review);
     }
 
     @Override
