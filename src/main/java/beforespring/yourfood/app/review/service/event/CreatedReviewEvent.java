@@ -1,6 +1,5 @@
 package beforespring.yourfood.app.review.service.event;
 
-import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import lombok.Getter;
 import org.springframework.validation.annotation.Validated;
 

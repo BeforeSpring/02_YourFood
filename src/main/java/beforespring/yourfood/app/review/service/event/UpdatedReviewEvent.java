@@ -1,8 +1,5 @@
 package beforespring.yourfood.app.review.service.event;
 
-import beforespring.yourfood.app.exception.RestaurantNotFoundException;
-import beforespring.yourfood.app.restaurant.domain.Restaurant;
-import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
 import lombok.Getter;
 import org.springframework.validation.annotation.Validated;
 
