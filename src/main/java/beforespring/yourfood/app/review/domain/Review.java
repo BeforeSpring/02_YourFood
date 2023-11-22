@@ -2,10 +2,13 @@ package beforespring.yourfood.app.review.domain;
 
 import beforespring.yourfood.app.member.domain.Member;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
+import beforespring.yourfood.app.review.domain.event.ReviewCreatedEvent;
+import beforespring.yourfood.app.review.domain.event.ReviewUpdatedEvent;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -50,13 +53,15 @@ public class Review {
         Long memberId,
         Long restaurantId,
         String content,
-        Integer rating) {
+        Integer rating,
+        ApplicationEventPublisher applicationEventPublisher) {
         this.memberId = memberId;
         this.restaurantId = restaurantId;
         this.content = content;
         this.rating = rating;
         this.createdAt = LocalDateTime.now();
         this.beforeRating = 0;
+        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(restaurantId, rating));
     }
 
     /**
@@ -65,10 +70,11 @@ public class Review {
      * @param content 수정할 내용
      * @param rating  수정할 평점
      */
-    public void updateReview(String content, Integer rating) {
+    public void updateReview(String content, Integer rating, ApplicationEventPublisher applicationEventPublisher) {
         this.content = content;
         this.beforeRating = this.rating;
         this.rating = rating;
         this.updatedAt = LocalDateTime.now();
+        applicationEventPublisher.publishEvent(new ReviewUpdatedEvent(this.restaurantId, this.rating, this.beforeRating));
     }
 }

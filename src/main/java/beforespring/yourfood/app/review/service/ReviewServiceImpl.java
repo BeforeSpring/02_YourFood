@@ -5,8 +5,6 @@ import beforespring.yourfood.app.restaurant.service.dto.ReviewDto;
 import beforespring.yourfood.app.review.domain.Review;
 import beforespring.yourfood.app.review.domain.ReviewRepository;
 import beforespring.yourfood.app.review.exception.MemberMismatchException;
-import beforespring.yourfood.app.review.service.event.ReviewCreatedEvent;
-import beforespring.yourfood.app.review.service.event.ReviewUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -28,8 +26,8 @@ public class ReviewServiceImpl implements ReviewService {
                             .restaurantId(restaurantId)
                             .content(content)
                             .rating(rating)
+                            .applicationEventPublisher(applicationEventPublisher)
                             .build();
-        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(restaurantId, rating));
         reviewRepository.save(review);
     }
 
@@ -39,8 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (!memberId.equals(review.getMemberId())) {
             throw new MemberMismatchException();
         }
-        review.updateReview(content, rating);
-        applicationEventPublisher.publishEvent(new ReviewUpdatedEvent(review.getRestaurantId(), review.getRating(), review.getBeforeRating()));
+        review.updateReview(content, rating, applicationEventPublisher);
     }
 
     @Override
