@@ -10,6 +10,7 @@ import beforespring.yourfood.app.review.domain.Review;
 import beforespring.yourfood.app.review.domain.ReviewRepository;
 import beforespring.yourfood.app.review.service.event.CreateReviewEvent;
 import beforespring.yourfood.app.review.service.event.UpdateReviewEvent;
+import beforespring.yourfood.app.review.exception.ReviewNotFoundException;
 import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.app.utils.OrderBy;
 import beforespring.yourfood.web.api.restaurant.response.RestaurantDto;
@@ -70,7 +71,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantsInLocation.sort(byDistance(descendingOrder, coordinates));
         return restaurantsInLocation;
     }
-
+  
     @Override
     public List<RestaurantDto> getRestaurants(OrderBy orderBy, boolean descendingOrder, Coordinates coordinates, int rangeInMeter) {
         List<Restaurant> restaurantsInLocation = new ArrayList<>(restaurantQueryRepository.findAllWithin(coordinates, rangeInMeter));
