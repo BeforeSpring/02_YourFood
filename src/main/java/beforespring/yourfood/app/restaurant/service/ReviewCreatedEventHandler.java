@@ -22,8 +22,4 @@ public class ReviewCreatedEventHandler {
         Restaurant restaurant = restaurantRepository.findById(event.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         restaurant.updateNewReviewRating(event.getRating());
     }
-
-    public Restaurant getRestaurant(Long id) {
-
-    }
 }
