@@ -3,7 +3,7 @@ package beforespring.yourfood.batch.config;
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
-import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
+import beforespring.yourfood.batch.rawrestaurant.infra.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.RawRestaurantRepository;
 import beforespring.yourfood.batch.rawrestaurant.fetch.RawRestaurantItemWriter;
 import beforespring.yourfood.batch.rawrestaurant.fetch.RawRestaurantReaderResult;

@@ -1,7 +1,8 @@
 package beforespring.yourfood.batch.rawrestaurant;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
-import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
+import beforespring.yourfood.batch.rawrestaurant.infra.fetcherimplement.GyeonggiFetcherImpl;
+import beforespring.yourfood.batch.rawrestaurant.infra.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class RawRestaurantFetcherImplTest {
     @Test
     void test_find_method() {
         // given
-        RawRestaurantFetcher rawRestaurantFetcher = new RawRestaurantFetcherImpl(openApiManagerFactory, CuisineType.CAFE);
+        RawRestaurantFetcher rawRestaurantFetcher = new GyeonggiFetcherImpl(openApiManagerFactory, CuisineType.CAFE);
 
         // when
         int page = 2;

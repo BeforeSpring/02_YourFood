@@ -1,4 +1,4 @@
-package beforespring.yourfood.batch.rawrestaurant.mapping;
+package beforespring.yourfood.batch.rawrestaurant.infra;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;

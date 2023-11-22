@@ -1,25 +1,22 @@
-package beforespring.yourfood.batch.rawrestaurant;
+package beforespring.yourfood.batch.rawrestaurant.infra.fetcherimplement;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
-import beforespring.yourfood.batch.rawrestaurant.mapping.Genrestrt;
-import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManager;
-import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
+import beforespring.yourfood.batch.rawrestaurant.RawRestaurantFetchResult;
+import beforespring.yourfood.batch.rawrestaurant.RawRestaurantFetcher;
+import beforespring.yourfood.batch.rawrestaurant.domain.gyeonggi.Genrestrt;
+import beforespring.yourfood.batch.rawrestaurant.infra.OpenApiManager;
+import beforespring.yourfood.batch.rawrestaurant.infra.OpenApiManagerFactory;
 import beforespring.yourfood.batch.rawrestaurant.model.RawRestaurant;
 
 import java.util.List;
 
-/**
- * 해당 fetcher는 다른 공공데이터 url로 사용할 수 없기 떄문에 class 명을 경기도 관련으로 바꿔야됨
- * <p>
- * Refactoring 필요함
- */
-public class RawRestaurantFetcherImpl implements RawRestaurantFetcher {
+public class GyeonggiFetcherImpl implements RawRestaurantFetcher {
     private final CuisineType cuisineType;
 
     private final OpenApiManager openApiManager;
 
 
-    public RawRestaurantFetcherImpl(OpenApiManagerFactory openApiManagerFactory, CuisineType cuisineType) {
+    public GyeonggiFetcherImpl(OpenApiManagerFactory openApiManagerFactory, CuisineType cuisineType) {
         this.cuisineType = cuisineType;
         this.openApiManager = openApiManagerFactory.createOpenApiManager(cuisineType);
     }

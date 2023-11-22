@@ -1,4 +1,4 @@
-package beforespring.yourfood.batch.rawrestaurant.mapping;
+package beforespring.yourfood.batch.rawrestaurant.domain.gyeonggi;
 
 import lombok.Getter;
 import lombok.Setter;

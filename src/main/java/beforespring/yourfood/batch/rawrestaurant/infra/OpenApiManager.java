@@ -1,6 +1,7 @@
-package beforespring.yourfood.batch.rawrestaurant.mapping;
+package beforespring.yourfood.batch.rawrestaurant.infra;
 
-import beforespring.yourfood.batch.rawrestaurant.mapping.exception.MapperProcessingException;
+import beforespring.yourfood.batch.rawrestaurant.domain.gyeonggi.Genrestrt;
+import beforespring.yourfood.batch.rawrestaurant.exception.MapperProcessingException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.http.ResponseEntity;
