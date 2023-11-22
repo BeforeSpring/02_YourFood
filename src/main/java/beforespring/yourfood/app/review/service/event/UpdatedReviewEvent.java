@@ -1,6 +1,8 @@
 package beforespring.yourfood.app.review.service.event;
 
+import beforespring.yourfood.app.exception.RestaurantNotFoundException;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
+import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
 import lombok.Getter;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,13 +12,13 @@ import java.math.RoundingMode;
 
 @Getter
 @Validated
-public class UpdateReviewEvent {
-    private final Restaurant restaurant;
+public class UpdatedReviewEvent {
+    private final Long restaurantId;
     private final BigDecimal rating;
     private final BigDecimal beforeRating;
 
-    public UpdateReviewEvent(@NotBlank Restaurant restaurant, @NotBlank Integer rating, @NotBlank Integer beforeRating) {
-        this.restaurant = restaurant;
+    public UpdatedReviewEvent(@NotBlank Long restaurantId, @NotBlank Integer rating, @NotBlank Integer beforeRating) {
+        this.restaurantId = restaurantId;
         this.rating = BigDecimal.valueOf(rating).setScale(5, RoundingMode.HALF_UP);
         this.beforeRating = BigDecimal.valueOf(beforeRating).setScale(5, RoundingMode.HALF_UP);
     }

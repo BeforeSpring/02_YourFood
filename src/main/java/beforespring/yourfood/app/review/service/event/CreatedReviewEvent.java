@@ -10,12 +10,12 @@ import java.math.RoundingMode;
 
 @Getter
 @Validated
-public class CreateReviewEvent {
-    private final Restaurant restaurant;
+public class CreatedReviewEvent {
+    private final Long restaurantId;
     private final BigDecimal rating;
 
-    public CreateReviewEvent(@NotBlank Restaurant restaurant, @NotBlank Integer rating) {
-        this.restaurant = restaurant;
+    public CreatedReviewEvent(@NotBlank Long restaurantId, @NotBlank Integer rating) {
+        this.restaurantId = restaurantId;
         this.rating = BigDecimal.valueOf(rating).setScale(5, RoundingMode.HALF_UP);
     }
 }
