@@ -26,9 +26,8 @@ public class ReviewServiceImpl implements ReviewService {
                             .restaurantId(restaurantId)
                             .content(content)
                             .rating(rating)
-                            .applicationEventPublisher(applicationEventPublisher)
                             .build();
-        reviewRepository.save(review);
+        reviewRepository.save(review.posted(applicationEventPublisher));
     }
 
     @Override

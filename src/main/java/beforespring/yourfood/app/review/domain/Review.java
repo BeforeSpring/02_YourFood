@@ -1,7 +1,5 @@
 package beforespring.yourfood.app.review.domain;
 
-import beforespring.yourfood.app.member.domain.Member;
-import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.review.domain.event.ReviewCreatedEvent;
 import beforespring.yourfood.app.review.domain.event.ReviewUpdatedEvent;
 import lombok.AccessLevel;
@@ -53,15 +51,13 @@ public class Review {
         Long memberId,
         Long restaurantId,
         String content,
-        Integer rating,
-        ApplicationEventPublisher applicationEventPublisher) {
+        Integer rating) {
         this.memberId = memberId;
         this.restaurantId = restaurantId;
         this.content = content;
         this.rating = rating;
         this.createdAt = LocalDateTime.now();
         this.beforeRating = 0;
-        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(restaurantId, rating));
     }
 
     /**
@@ -76,5 +72,10 @@ public class Review {
         this.rating = rating;
         this.updatedAt = LocalDateTime.now();
         applicationEventPublisher.publishEvent(new ReviewUpdatedEvent(this.restaurantId, this.rating, this.beforeRating));
+    }
+
+    public Review posted(ApplicationEventPublisher applicationEventPublisher) {
+        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(this.restaurantId, this.rating));
+        return this;
     }
 }
