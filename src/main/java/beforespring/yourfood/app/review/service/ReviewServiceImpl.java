@@ -33,9 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void updateReview(Long reviewId, Long memberId, String content, Integer rating) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        if (!memberId.equals(review.getMemberId())) {
-            throw new MemberMismatchException();
-        }
         review.updateReview(content, rating, applicationEventPublisher);
     }
 
