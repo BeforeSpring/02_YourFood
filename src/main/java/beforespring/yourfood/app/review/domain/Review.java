@@ -67,17 +67,17 @@ public class Review {
      * @param content 수정할 내용
      * @param rating  수정할 평점
      */
-    public void updateReview(String content, Integer rating, ApplicationEventPublisher applicationEventPublisher) {
+    public void updateReview(String content, Integer rating, ApplicationEventPublisher publisher) {
         validateMemberId(memberId);
         this.content = content;
         this.beforeRating = this.rating;
         this.rating = rating;
         this.updatedAt = LocalDateTime.now();
-        applicationEventPublisher.publishEvent(new ReviewUpdatedEvent(this.restaurantId, this.rating, this.beforeRating));
+        publisher.publishEvent(new ReviewUpdatedEvent(this.restaurantId, this.rating, this.beforeRating));
     }
 
-    public Review posted(ApplicationEventPublisher applicationEventPublisher) {
-        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(this.restaurantId, this.rating));
+    public Review posted(ApplicationEventPublisher publisher) {
+        publisher.publishEvent(new ReviewCreatedEvent(this.restaurantId, this.rating));
         return this;
     }
 

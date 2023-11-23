@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public void saveReview(Long restaurantId, Long memberId, String content, Integer rating) {
@@ -27,13 +27,13 @@ public class ReviewServiceImpl implements ReviewService {
                             .content(content)
                             .rating(rating)
                             .build();
-        reviewRepository.save(review.posted(applicationEventPublisher));
+        reviewRepository.save(review.posted(publisher));
     }
 
     @Override
     public void updateReview(Long reviewId, Long memberId, String content, Integer rating) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        review.updateReview(content, rating, applicationEventPublisher);
+        review.updateReview(content, rating, publisher);
     }
 
     @Override
