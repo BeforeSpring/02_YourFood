@@ -4,8 +4,9 @@ package beforespring.yourfood.app.review.domain;
 
 
 import beforespring.yourfood.app.utils.OrderBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface ReviewQueryRepository {
     /**
@@ -16,5 +17,5 @@ public interface ReviewQueryRepository {
      * @param restaurantId 리뷰를 가져올 레스토랑의 ID
      * @return 정렬된 리뷰 목록
      */
-    List<Review> findReviewsByRestaurantIdOrderBy(boolean desc, OrderBy orderBy, Long restaurantId);
+    Page<Review> findReviewsByRestaurantIdOrderBy(boolean desc, OrderBy orderBy, Long restaurantId, Pageable pageable);
 }
