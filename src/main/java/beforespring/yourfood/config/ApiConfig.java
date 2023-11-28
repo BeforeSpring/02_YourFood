@@ -2,6 +2,7 @@ package beforespring.yourfood.config;
 
 import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import beforespring.yourfood.batch.rawrestaurant.mapping.OpenApiManagerFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,10 @@ public class ApiConfig {
     private String developerApiKey;
 
 
+    @Bean
+    public XmlMapper xmlMapper() {
+        return new XmlMapper();
+    }
 
     @Bean
     public OpenApiManagerFactory openApiManagerFactory() {
@@ -33,7 +38,7 @@ public class ApiConfig {
         return new OpenApiManagerFactory(
             cuisineTypeUriMap,
             new RestTemplate(),
-            null,
+            xmlMapper(),
             developerApiKey
         );
     }
