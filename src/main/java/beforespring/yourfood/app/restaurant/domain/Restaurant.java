@@ -1,19 +1,16 @@
 package beforespring.yourfood.app.restaurant.domain;
 
 import beforespring.yourfood.app.restaurant.infra.CuisineTypeConverter;
-import beforespring.yourfood.app.review.domain.Review;
 import beforespring.yourfood.app.utils.Coordinates;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.event.EventListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -155,6 +152,15 @@ public class Restaurant {
                           .multiply(BigDecimal.valueOf(this.updatedRatingNum).setScale(5))
                           .add(rating)
                           .divide(BigDecimal.valueOf(++this.updatedRatingNum).setScale(5), RoundingMode.HALF_UP)
+                          .setScale(5, RoundingMode.HALF_UP);
+        this.ratingUpdatedAt = LocalDateTime.now();
+    }
+
+    public void updateReviewRating(BigDecimal rating, BigDecimal beforeRating, int newRatingNum) {
+        this.rating = this.rating
+                          .multiply(BigDecimal.valueOf(this.updatedRatingNum))
+                          .add(rating.subtract(beforeRating))
+                          .divide(BigDecimal.valueOf(this.updatedRatingNum += newRatingNum), RoundingMode.HALF_UP)
                           .setScale(5, RoundingMode.HALF_UP);
         this.ratingUpdatedAt = LocalDateTime.now();
     }
