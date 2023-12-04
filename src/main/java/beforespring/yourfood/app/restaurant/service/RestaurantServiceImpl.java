@@ -1,9 +1,12 @@
 package beforespring.yourfood.app.restaurant.service;
 
+import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.domain.RestaurantQueryRepository;
 import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
 import beforespring.yourfood.app.restaurant.exception.RestaurantNotFoundException;
+import beforespring.yourfood.app.restaurant.service.dto.CuisineInfo;
+import beforespring.yourfood.app.restaurant.service.dto.RestaurantInfo;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.restaurant.service.dto.ReviewDto;
 import beforespring.yourfood.app.review.domain.Review;
@@ -15,8 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static beforespring.yourfood.app.utils.RestaurantComparators.byDistance;
@@ -76,6 +78,35 @@ public class RestaurantServiceImpl implements RestaurantService {
                        restaurant.getRating()
                    ))
                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CuisineInfo> findRestaurantsByCuisineType(Coordinates currentCoords, int rangeInMeters) {
+        List<Restaurant> allWithin = restaurantQueryRepository.findAllWithin(currentCoords, rangeInMeters);
+
+        Map<CuisineType, List<Restaurant>> restaurantsByCuisineType = new HashMap<>();
+
+        allWithin.forEach(restaurant -> restaurant.getCuisineType().forEach(cuisineType -> restaurantsByCuisineType
+            .computeIfAbsent(cuisineType, k -> new ArrayList<>())
+            .add(restaurant)));
+
+        return restaurantsByCuisineType.entrySet().stream()
+            .map(entry -> {
+                CuisineType cuisineType = entry.getKey();
+                List<RestaurantInfo> restaurantInfos = entry.getValue().stream()
+                    .sorted(Comparator.comparing(Restaurant::getRating).reversed())
+                    .limit(5)
+                    .map(restaurant -> RestaurantInfo.builder()
+                        .name(restaurant.getName())
+                        .rating(restaurant.getRating())
+                        .description(restaurant.getDescription())
+                        .address(restaurant.getAddress())
+                        .build())
+                    .collect(Collectors.toList());
+
+                return new CuisineInfo(Collections.singleton(cuisineType), restaurantInfos);
+            })
+            .collect(Collectors.toList());
     }
 }
 
