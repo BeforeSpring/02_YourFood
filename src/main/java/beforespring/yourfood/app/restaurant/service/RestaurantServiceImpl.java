@@ -5,7 +5,7 @@ import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.domain.RestaurantQueryRepository;
 import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
 import beforespring.yourfood.app.restaurant.exception.RestaurantNotFoundException;
-import beforespring.yourfood.app.restaurant.service.dto.CuisineInfo;
+import beforespring.yourfood.app.restaurant.service.dto.CuisineGroup;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantInfo;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.restaurant.service.dto.ReviewDto;
@@ -81,32 +81,37 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<CuisineInfo> findRestaurantsByCuisineType(Coordinates currentCoords, int rangeInMeters) {
+    public List<CuisineGroup> searchCuisineInfoByLocationAndRange(Coordinates currentCoords, int rangeInMeters) {
         List<Restaurant> allWithin = restaurantQueryRepository.findAllWithin(currentCoords, rangeInMeters);
 
+        Map<CuisineType, List<Restaurant>> restaurantsByCuisineType = groupRestaurantsByCuisineType(allWithin);
+
+        return restaurantsByCuisineType.entrySet().stream()
+            .map(this::createCuisineGroup)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * CuisineType 에 따라 맛집을 그룹화
+     */
+    private Map<CuisineType, List<Restaurant>> groupRestaurantsByCuisineType(List<Restaurant> restaurants) {
         Map<CuisineType, List<Restaurant>> restaurantsByCuisineType = new HashMap<>();
 
-        allWithin.forEach(restaurant -> restaurant.getCuisineType().forEach(cuisineType -> restaurantsByCuisineType
+        restaurants.forEach(restaurant -> restaurant.getCuisineType().forEach(cuisineType -> restaurantsByCuisineType
             .computeIfAbsent(cuisineType, k -> new ArrayList<>())
             .add(restaurant)));
 
-        return restaurantsByCuisineType.entrySet().stream()
-            .map(entry -> {
-                CuisineType cuisineType = entry.getKey();
-                List<RestaurantInfo> restaurantInfos = entry.getValue().stream()
-                    .sorted(Comparator.comparing(Restaurant::getRating).reversed())
-                    .limit(5)
-                    .map(restaurant -> RestaurantInfo.builder()
-                        .name(restaurant.getName())
-                        .rating(restaurant.getRating())
-                        .description(restaurant.getDescription())
-                        .address(restaurant.getAddress())
-                        .build())
-                    .collect(Collectors.toList());
+        return restaurantsByCuisineType;
+    }
 
-                return new CuisineInfo(Collections.singleton(cuisineType), restaurantInfos);
-            })
+    private CuisineGroup createCuisineGroup(Map.Entry<CuisineType, List<Restaurant>> entry) {
+        CuisineType cuisineType = entry.getKey();
+        List<RestaurantInfo> restaurantInfos = entry.getValue().stream()
+            .sorted(Comparator.comparing(Restaurant::getRating).reversed())
+            .limit(5)
+            .map(RestaurantInfo::createFromRestaurant)
             .collect(Collectors.toList());
+        return new CuisineGroup(cuisineType, restaurantInfos);
     }
 }
 

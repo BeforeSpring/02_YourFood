@@ -1,7 +1,7 @@
 package beforespring.yourfood.app.restaurant.service;
 
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
-import beforespring.yourfood.app.restaurant.service.dto.CuisineInfo;
+import beforespring.yourfood.app.restaurant.service.dto.CuisineGroup;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.app.utils.OrderBy;
@@ -47,5 +47,5 @@ public interface RestaurantService {
      * @param rangeInMeters 반경
      * @return CuisineInfo  CuisineType 과 해당 CuisineType 에 속하는 상위 5개(평점순) 맛집
      */
-    List<CuisineInfo> findRestaurantsByCuisineType(Coordinates currentCoords, int rangeInMeters);
+    List<CuisineGroup> searchCuisineInfoByLocationAndRange(Coordinates currentCoords, int rangeInMeters);
 }
