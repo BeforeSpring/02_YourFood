@@ -4,5 +4,8 @@ import beforespring.yourfood.app.restaurant.domain.CuisineType;
 import java.util.List;
 
 
-public record CuisineGroup(CuisineType cuisineType, List<RestaurantInfo> restaurants) {
+public record CuisineGroup(
+    CuisineType cuisineType,
+    List<RestaurantDto> restaurants
+) {
 }

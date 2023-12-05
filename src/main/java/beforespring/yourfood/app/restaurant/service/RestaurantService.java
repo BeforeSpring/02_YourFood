@@ -5,7 +5,7 @@ import beforespring.yourfood.app.restaurant.service.dto.CuisineGroup;
 import beforespring.yourfood.app.restaurant.service.dto.RestaurantWithReviewDto;
 import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.app.utils.OrderBy;
-import beforespring.yourfood.web.api.restaurant.response.RestaurantDto;
+import beforespring.yourfood.app.restaurant.service.dto.RestaurantDto;
 
 import java.util.List;
 
