@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,6 +46,9 @@ public class RestaurantGrouper {
     }
 
     private CuisineGroup mapToCuisineGroup(CuisineType cuisineType, List<RestaurantDto> restaurantDtos) {
-        return new CuisineGroup(cuisineType, restaurantDtos);
+        List<RestaurantDto> top5ByRating = restaurantDtos.stream()
+            .limit(5)
+            .collect(Collectors.toList());
+        return new CuisineGroup(cuisineType, top5ByRating);
     }
 }
