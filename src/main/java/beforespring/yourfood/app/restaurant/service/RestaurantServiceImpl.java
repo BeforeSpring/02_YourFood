@@ -1,9 +1,5 @@
 package beforespring.yourfood.app.restaurant.service;
-
-import static beforespring.yourfood.app.utils.RestaurantComparators.byDistance;
-import static beforespring.yourfood.app.utils.RestaurantComparators.byRatingAverage;
 import static beforespring.yourfood.app.utils.RestaurantComparators.sortBy;
-
 import beforespring.yourfood.app.restaurant.domain.Restaurant;
 import beforespring.yourfood.app.restaurant.domain.RestaurantQueryRepository;
 import beforespring.yourfood.app.restaurant.domain.RestaurantRepository;
@@ -42,25 +38,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         return RestaurantWithReviewDto.createFrom(restaurant, reviewDtos);
     }
 
-    @Override
-    public List<Restaurant> getRestaurantsByRating(boolean descendingOrder, Coordinates coordinates,
-        int rangeInMeter) {
-        List<Restaurant> restaurantsInLocation = restaurantQueryRepository.findAllWithin(
-            coordinates, rangeInMeter);
-        // 평점순 정렬
-        restaurantsInLocation.sort(byRatingAverage(descendingOrder));
-        return restaurantsInLocation;
-    }
-
-    @Override
-    public List<Restaurant> getRestaurantsByDistance(boolean descendingOrder,
-        Coordinates coordinates, int rangeInMeter) {
-        List<Restaurant> restaurantsInLocation = restaurantQueryRepository.findAllWithin(
-            coordinates, rangeInMeter);
-        // 거리순 정렬
-        restaurantsInLocation.sort(byDistance(descendingOrder, coordinates));
-        return restaurantsInLocation;
-    }
 
     @Override
     public List<RestaurantDto> getRestaurants(
@@ -78,12 +55,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<CuisineGroup> searchCuisineInfoByLocationAndRange(
+    public List<CuisineGroup> getRestaurantGroupedBy(
+        OrderBy orderBy,
+        boolean descendingOrder,
         Coordinates currentCoords,
         int rangeInMeters
     ) {
         return restaurantGrouper.groupByCuisineGroup(
-            getRestaurants(null, false, currentCoords, rangeInMeters));
+            getRestaurants(orderBy, descendingOrder, currentCoords, rangeInMeters));
     }
 
 }
