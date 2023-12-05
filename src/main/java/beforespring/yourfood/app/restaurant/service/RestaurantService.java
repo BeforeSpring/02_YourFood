@@ -26,5 +26,5 @@ public interface RestaurantService {
      * @param rangeInMeters 반경
      * @return CuisineInfo  CuisineType 과 해당 CuisineType 에 속하는 상위 5개(평점순) 맛집
      */
-    List<CuisineGroup> getRestaurantGroupedBy(OrderBy orderBy, boolean descendingOrder, Coordinates currentCoords, int rangeInMeters);
+    List<CuisineGroup> getRestaurantGroupedBy(OrderBy orderBy, boolean descendingOrder, Coordinates currentCoords, int rangeInMeters, int limitByCuisineType);
 }

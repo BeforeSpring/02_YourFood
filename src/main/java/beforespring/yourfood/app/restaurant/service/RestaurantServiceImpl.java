@@ -59,10 +59,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         OrderBy orderBy,
         boolean descendingOrder,
         Coordinates currentCoords,
-        int rangeInMeters
+        int rangeInMeters,
+        int limitByCuisineType
     ) {
         return restaurantGrouper.groupByCuisineGroup(
-            getRestaurants(orderBy, descendingOrder, currentCoords, rangeInMeters));
+            getRestaurants(orderBy, descendingOrder, currentCoords, rangeInMeters), limitByCuisineType);
     }
 
 }

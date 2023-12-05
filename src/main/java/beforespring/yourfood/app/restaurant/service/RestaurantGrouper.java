@@ -13,13 +13,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RestaurantGrouper {
-
-    public List<CuisineGroup> groupByCuisineGroup(List<RestaurantDto> restaurants) {
+    /**
+     *
+     * @param restaurants 그룹화할 레스토랑 목록
+     * @param limitByCuisineType 각 CuisineType 별로 맛집 수
+     * @return 그룹화된 CuisineGroup 목록
+     */
+    public List<CuisineGroup> groupByCuisineGroup(List<RestaurantDto> restaurants, int limitByCuisineType) {
         Map<CuisineType, List<RestaurantDto>> cuisineTypeListMap = groupRestaurantsByCuisineType(
             restaurants);
         return cuisineTypeListMap.entrySet()
             .stream()
-            .map(entry -> mapToCuisineGroup(entry.getKey(), entry.getValue()))
+            .map(entry -> mapToCuisineGroup(entry.getKey(), entry.getValue(), limitByCuisineType))
             .toList();
     }
 
@@ -45,9 +50,9 @@ public class RestaurantGrouper {
         return restaurantsByCuisineType;
     }
 
-    private CuisineGroup mapToCuisineGroup(CuisineType cuisineType, List<RestaurantDto> restaurantDtos) {
+    private CuisineGroup mapToCuisineGroup(CuisineType cuisineType, List<RestaurantDto> restaurantDtos, int limit) {
         List<RestaurantDto> top5ByRating = restaurantDtos.stream()
-            .limit(5)
+            .limit(limit)
             .collect(Collectors.toList());
         return new CuisineGroup(cuisineType, top5ByRating);
     }
