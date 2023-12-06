@@ -9,37 +9,59 @@ import beforespring.yourfood.app.review.service.ReviewService;
 import beforespring.yourfood.web.api.common.PageResponse;
 import beforespring.yourfood.web.api.review.response.ReviewResponse;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
+
     private final ReviewService reviewService;
+
     /**
      * 맛집 리뷰 생성
-     * @param reviewCreateRequest 새 리뷰
+     *
+     * @param request 새 리뷰
      */
     @PostMapping
-    public GenericResponse<ReviewResponse> createReview(@RequestBody ReviewCreateRequest reviewCreateRequest) {
-        return null;
+    @PreAuthorize("idMatches(#request.memberId())")
+    public GenericResponse<ReviewResponse> createReview(
+        @RequestBody ReviewCreateRequest request) {
+        reviewService.saveReview(
+            request.restaurantId(),
+            request.memberId(),
+            request.content(),
+            request.rating());
+        return GenericResponse.ok(null);
     }
+
     /**
      * 리뷰 수정
+     *
      * @param reviewId 수정할 리뷰의 ID
-     * @param reviewUpdateRequest 수정된 리뷰 내용
+     * @param request  수정된 리뷰 내용
      */
     @PutMapping("/{reviewId}")
-    public GenericResponse<ReviewResponse> updateReview(@PathVariable Long reviewId, @RequestBody ReviewUpdateRequest reviewUpdateRequest) {
-        return null;
+    @PreAuthorize("idMatches(#request.memberId())")
+    public GenericResponse<ReviewResponse> updateReview(@PathVariable Long reviewId,
+        @RequestBody ReviewUpdateRequest request) {
+        reviewService.updateReview(
+            reviewId,
+            request.memberId(),
+            request.content(),
+            request.rating()
+        );
+
+        return GenericResponse.ok(null);
     }
 
     /**
      * 리뷰 삭제
+     *
      * @param reviewId 삭제할 리뷰의 ID
      */
     @DeleteMapping("/{reviewId}")
@@ -64,20 +86,13 @@ public class ReviewController {
         @RequestParam("restaurantId") Long restaurantId,
         @PageableDefault(size = 5) Pageable pageable
     ) {
-        Page<ReviewDto> reviewPage = reviewService.findReviewsByRestaurantIdOrderBy(desc, orderBy, restaurantId, pageable);
-        PageResponse<ReviewDto> pageResponse = PageResponse.<ReviewDto>builder()
-            .contents(reviewPage.getContent())
-            .page(reviewPage.getNumber())
-            .size(reviewPage.getSize())
-            .totalElements(reviewPage.getTotalElements()).build();
+        Page<ReviewDto> reviewPage = reviewService.findReviewsByRestaurantIdOrderBy(
+            desc,
+            orderBy,
+            restaurantId,
+            pageable);
+        PageResponse<ReviewDto> pageResponse = PageResponse.fromPage(reviewPage);
 
-        return GenericResponse.<PageResponse<ReviewDto>>builder()
-            .statusCode(200)
-            .data(pageResponse)
-            .message("Success")
-            .build();
+        return GenericResponse.ok(pageResponse);
     }
-
-
-
 }
