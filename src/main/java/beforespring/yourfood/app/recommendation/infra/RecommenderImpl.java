@@ -39,7 +39,7 @@ public class RecommenderImpl implements Recommender {
     public Recommendation getRecommendation(Subscriber subscriber) {
         List<CuisineGroup> cuisineGroups = restaurantService.getRestaurantGroupedBy(
             OrderBy.RATING,
-            true, // true: 오름차순 정렬, false: 내림차순 정렬
+            true, // true: 평점 높은 순 false: 평점 낮은 순
             subscriber.coordinates(),
             rangeInMeters,
             limitByCuisineType);
