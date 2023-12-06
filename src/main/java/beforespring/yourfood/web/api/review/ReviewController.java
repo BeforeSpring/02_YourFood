@@ -36,7 +36,7 @@ public class ReviewController {
             request.memberId(),
             request.content(),
             request.rating());
-        return GenericResponse.ok(null);
+        return GenericResponse.ok();
     }
 
     /**
@@ -56,7 +56,7 @@ public class ReviewController {
             request.rating()
         );
 
-        return GenericResponse.ok(null);
+        return GenericResponse.ok();
     }
 
     /**
@@ -79,8 +79,8 @@ public class ReviewController {
      * @param pageable     페이지 크기
      * @return 리뷰 목록
      */
-    @GetMapping("")
-    public GenericResponse<PageResponse<ReviewDto>> findReviewsByRestaurantIdOrderBy(
+    @GetMapping
+    public GenericResponse<PageResponse<ReviewDto>> getReviews(
         @RequestParam(value = "desc", required = false, defaultValue = "false") boolean desc,
         @RequestParam(value = "orderBy", required = false) OrderBy orderBy,
         @RequestParam("restaurantId") Long restaurantId,
@@ -91,8 +91,7 @@ public class ReviewController {
             orderBy,
             restaurantId,
             pageable);
-        PageResponse<ReviewDto> pageResponse = PageResponse.fromPage(reviewPage);
 
-        return GenericResponse.ok(pageResponse);
+        return GenericResponse.ok(PageResponse.fromPage(reviewPage));
     }
 }
