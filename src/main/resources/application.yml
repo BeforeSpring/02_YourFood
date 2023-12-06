@@ -5,3 +5,7 @@ beforespring:
     sync: 0 0 4 * * ?
     # 매일 오전 11시 30분에 실행
     lunch: 0 30 11 * * ?
+
+  recommendation:
+    rangeInMeters: 1000
+    limitByCuisineType: 5
