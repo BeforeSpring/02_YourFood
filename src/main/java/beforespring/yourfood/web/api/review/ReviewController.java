@@ -1,19 +1,19 @@
 package beforespring.yourfood.web.api.review;
 
-import beforespring.yourfood.app.utils.OrderBy;
-import beforespring.yourfood.web.api.common.GenericResponse;
-import beforespring.yourfood.web.api.review.request.ReviewCreateRequest;
-import beforespring.yourfood.web.api.review.request.ReviewUpdateRequest;
 import beforespring.yourfood.app.restaurant.service.dto.ReviewDto;
 import beforespring.yourfood.app.review.service.ReviewService;
+import beforespring.yourfood.app.utils.OrderBy;
+import beforespring.yourfood.web.api.common.GenericResponse;
 import beforespring.yourfood.web.api.common.PageResponse;
+import beforespring.yourfood.web.api.review.request.ReviewCreateRequest;
+import beforespring.yourfood.web.api.review.request.ReviewUpdateRequest;
 import beforespring.yourfood.web.api.review.response.ReviewResponse;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -48,7 +48,7 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     @PreAuthorize("idMatches(#request.memberId())")
     public GenericResponse<ReviewResponse> updateReview(@PathVariable Long reviewId,
-        @RequestBody ReviewUpdateRequest request) {
+                                                        @RequestBody ReviewUpdateRequest request) {
         reviewService.updateReview(
             reviewId,
             request.memberId(),
