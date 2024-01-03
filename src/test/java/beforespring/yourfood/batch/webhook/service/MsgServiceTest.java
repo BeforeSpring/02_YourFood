@@ -13,8 +13,6 @@ class MsgServiceTest {
     @Test
     public void 디스코드_메시지_테스트() {
         // given
-        boolean result = msgService.sendMsg("테스트 디스코드 알람입니다.");
-        // then
-        Assertions.assertTrue(result);
+        msgService.sendMsg();
     }
 }
