@@ -1,11 +1,10 @@
 package beforespring.yourfood.web.api.restaurant.response;
-import lombok.Builder;
+
+import beforespring.yourfood.app.restaurant.service.dto.RestaurantDto;
 import java.util.List;
 
 
 public record RestaurantListResponse(List<RestaurantDto> restaurantDtos) {
-    @Builder
-    public RestaurantListResponse {
-    }
+
 }
 

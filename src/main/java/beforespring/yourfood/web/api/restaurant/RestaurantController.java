@@ -7,10 +7,9 @@ import beforespring.yourfood.app.utils.Coordinates;
 import beforespring.yourfood.app.utils.SggLatLonService;
 import beforespring.yourfood.web.api.common.GenericResponse;
 
-import beforespring.yourfood.web.api.common.StatusCode;
 import beforespring.yourfood.web.api.restaurant.response.RegionDto;
 import beforespring.yourfood.web.api.restaurant.response.RegionListResponse;
-import beforespring.yourfood.web.api.restaurant.response.RestaurantDto;
+import beforespring.yourfood.app.restaurant.service.dto.RestaurantDto;
 import beforespring.yourfood.web.api.restaurant.response.RestaurantListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +31,9 @@ public class RestaurantController {
      */
     @GetMapping("/regions")
     public GenericResponse<RegionListResponse> getRegions() {
-        List<RegionDto> allSggLatLon = sggLatLonService.getAllSggLatLon();
-        RegionListResponse regionListResponse = RegionListResponse.builder().regionDto(allSggLatLon).build();
-        return GenericResponse.<RegionListResponse>builder()
-            .statusCode(StatusCode.OK)
-            .message("Success")
-            .data(regionListResponse)
-            .build();
+        List<RegionDto> result = sggLatLonService.getAllSggLatLon();
+        RegionListResponse response = new RegionListResponse(result);
+        return GenericResponse.ok(response);
     }
 
     /**
@@ -48,13 +43,11 @@ public class RestaurantController {
      * @return 레스토랑의 상세 정보
      */
     @GetMapping("/{restaurantId}")
-    public GenericResponse<RestaurantWithReviewDto> getRestaurantDetail(@PathVariable Long restaurantId) {
-        RestaurantWithReviewDto restaurantDto = restaurantService.getRestaurantDetail(restaurantId);
+    public GenericResponse<RestaurantWithReviewDto> getRestaurantDetail(
+        @PathVariable Long restaurantId) {
+        RestaurantWithReviewDto result = restaurantService.getRestaurantDetail(restaurantId);
 
-        return GenericResponse.<RestaurantWithReviewDto>builder()
-            .statusCode(StatusCode.OK)
-            .message("Success")
-            .data(restaurantDto).build();
+        return GenericResponse.ok(result);
     }
 
     /**
@@ -67,25 +60,24 @@ public class RestaurantController {
      * @param descendingOrder 내림차순 정렬 여부
      * @return 맛집 목록
      */
-    @GetMapping("")
-    public GenericResponse<RestaurantListResponse> getRestaurants(@RequestParam Integer rangeInMeter,
-                                                                  @RequestParam String lat,
-                                                                  @RequestParam String lon,
-                                                                  @RequestParam(required = false) OrderBy orderBy,
-                                                                  @RequestParam(required = false) boolean descendingOrder) {
-        BigDecimal latDecimal = new BigDecimal(String.valueOf(lat));
-        BigDecimal lonDecimal = new BigDecimal(String.valueOf(lon));
-        Coordinates coordinates = new Coordinates(latDecimal, lonDecimal);
+    @GetMapping
+    public GenericResponse<RestaurantListResponse> getRestaurants(
+        @RequestParam Integer rangeInMeter,
+        @RequestParam("lat") BigDecimal lat,
+        @RequestParam("lon") BigDecimal lon,
+        @RequestParam(required = false) OrderBy orderBy,
+        @RequestParam(required = false) boolean descendingOrder) {
 
-        List<RestaurantDto> restaurantDtos = restaurantService.getRestaurants(orderBy, descendingOrder, coordinates, rangeInMeter);
+        Coordinates coordinates = new Coordinates(lat, lon);
 
-        RestaurantListResponse restaurantListResponse = RestaurantListResponse.builder().restaurantDtos(restaurantDtos).build();
+        List<RestaurantDto> result = restaurantService.getRestaurants(
+            orderBy,
+            descendingOrder,
+            coordinates,
+            rangeInMeter);
 
-        return GenericResponse.<RestaurantListResponse>builder()
-            .statusCode(StatusCode.OK)
-            .message("Success")
-            .data(restaurantListResponse)
-            .build();
+        RestaurantListResponse response = new RestaurantListResponse(result);
+
+        return GenericResponse.ok(response);
     }
-
 }
